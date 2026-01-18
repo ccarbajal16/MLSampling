@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 # Introduction
 
 `MLSampling` provides an end-to-end interface for optimizing soil sampling campaigns using
-advanced Machine Learning models including Bayesian Deep Learning (BDL), Random Forest (RF), 
+advanced Machine Learning models including Bayesian Deep Learning (BDL), Random Forest (RF),
 Unified Deep Learning (UDL), and Unified Feature Network (UFN) models. The package bundles spatial
 data validation, benchmarking, and rich reporting so agronomic teams can iterate quickly on sampling
 strategies while maintaining reproducibility and auditability.
@@ -28,7 +28,7 @@ use in analysis workflows.
 
 # Package structure
 
-The package is organized around an R6 class `MLSampling` (formerly `SoilSamplingTool`) that orchestrates configuration,
+The package is organized around an R6 class `MLSampling` that orchestrates configuration,
 validation, optimization, and reporting. Supporting modules in the `R/` folder expose dedicated
 services for configuration management, spatial data validation, benchmarking, and data models.
 
@@ -96,5 +96,5 @@ tool$generate_ml_report(comparison)
 
 # Next steps
 
-- See the *Quickstart Workflow* vignette for a runnable example.
-- Explore *Advanced ML Optimization* for detailed uncertainty and ensemble workflows.
+- See the _Quickstart Workflow_ vignette for a runnable example.
+- Explore _Advanced ML Optimization_ for detailed uncertainty and ensemble workflows.
