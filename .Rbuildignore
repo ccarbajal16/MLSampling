@@ -1,0 +1,6 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.gitignore$
+^\.github$
+^package_build\.R$
+^\.git$

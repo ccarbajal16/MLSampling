@@ -1,0 +1,100 @@
+---
+title: "MLSampling Overview"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{MLSampling Overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+# Introduction
+
+`MLSampling` provides an end-to-end interface for optimizing soil sampling campaigns using
+advanced Machine Learning models including Bayesian Deep Learning (BDL), Random Forest (RF), 
+Unified Deep Learning (UDL), and Unified Feature Network (UFN) models. The package bundles spatial
+data validation, benchmarking, and rich reporting so agronomic teams can iterate quickly on sampling
+strategies while maintaining reproducibility and auditability.
+
+This vignette introduces the core components, how they interact, and the main entry points you will
+use in analysis workflows.
+
+# Package structure
+
+The package is organized around an R6 class `MLSampling` (formerly `SoilSamplingTool`) that orchestrates configuration,
+validation, optimization, and reporting. Supporting modules in the `R/` folder expose dedicated
+services for configuration management, spatial data validation, benchmarking, and data models.
+
+Key collaborators include:
+
+- `BayesianDeepLearning` (BDL) module for uncertainty quantification.
+- `RandomForestOptimization` (RF) module for feature importance analysis.
+- `MLEnsembleManager` for combining multiple models.
+- `VisualizationService` and `ReportingService` for generating insights.
+- `ConfigManager` (from `config-management.R`) for layered configuration with validation.
+
+# Getting started
+
+To begin, load the package and create an instance of the tool.
+
+```{r initialize, eval=FALSE}
+library(MLSampling)
+
+# Initialize with default configuration
+tool <- create_ml_sampling_tool()
+```
+
+# Optimization workflows
+
+Four primary optimization methods are available:
+
+1. **BDL (Bayesian Deep Learning):** Uses Monte Carlo Dropout to estimate uncertainty and guide sampling to areas of high epistemic uncertainty.
+2. **RF (Random Forest):** Uses feature importance and spatial autocorrelation to select locations that maximize information gain.
+3. **UDL (Unified Deep Learning):** Combines neural and heuristic techniques (Legacy support).
+4. **UFN (Unified Feature Network):** Balances neural models with statistical fallbacks (Legacy support).
+
+```{r optimization, eval=FALSE}
+# Run BDL optimization
+bdl_result <- tool$run_bdl(
+  field_data = field_data,
+  existing_samples = existing_samples,
+  n_new_samples = 30
+)
+
+# Run RF optimization
+rf_result <- tool$run_rf_optimization(
+  field_data = field_data,
+  existing_samples = existing_samples,
+  n_new_samples = 30
+)
+```
+
+# Comparing algorithms
+
+The tool can orchestrate multi-algorithm comparisons, running repeated experiments and evaluating
+results under configurable confidence thresholds.
+
+```{r comparison, eval=FALSE}
+comparison <- tool$compare_models(
+  field_data = field_data,
+  existing_samples = existing_samples,
+  n_new_samples = 50,
+  algorithms = c("BDL", "RF", "udl"),
+  n_iterations = 5
+)
+
+# Generate report
+tool$generate_ml_report(comparison)
+```
+
+# Next steps
+
+- See the *Quickstart Workflow* vignette for a runnable example.
+- Explore *Advanced ML Optimization* for detailed uncertainty and ensemble workflows.
