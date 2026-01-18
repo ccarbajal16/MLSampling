@@ -36,7 +36,7 @@ The Enhanced Soil Sampling Tool must meet these constitutional performance stand
 ### 1. Built-in Performance Monitoring
 
 ```{r performance_monitoring}
-library(SoilSamplingTool)
+library(MLSampling)
 
 # Create tool with performance monitoring enabled
 tool <- create_soil_sampling_tool(

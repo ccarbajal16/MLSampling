@@ -38,7 +38,7 @@ The Enhanced Soil Sampling Tool implements all constitutional principles:
 Always start by validating your system environment:
 
 ```{r system_validation}
-library(SoilSamplingTool)
+library(MLSampling)
 
 # Validate system environment for constitutional compliance
 validation_result <- validate_system_environment()
@@ -409,4 +409,4 @@ This vignette demonstrates the Enhanced Soil Sampling Tool's adherence to consti
 For more advanced topics, see:
 - `vignette("performance-optimization")` for performance tuning
 - `vignette("troubleshooting")` for detailed problem-solving guides
-- `?SoilSamplingTool` for complete API documentation
+- `?MLSampling` for complete API documentation

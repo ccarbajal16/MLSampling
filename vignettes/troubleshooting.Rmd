@@ -36,7 +36,7 @@ The Enhanced Soil Sampling Tool implements constitutional compliance in error ha
 ### 1. Comprehensive System Diagnostics
 
 ```{r system_diagnostics}
-library(SoilSamplingTool)
+library(MLSampling)
 
 # Run comprehensive system diagnostics
 diagnostic_results <- run_comprehensive_diagnostics()
@@ -1001,7 +1001,7 @@ when_to_escalate <- function(troubleshooting_results) {
   if (any(unlist(escalation_triggers))) {
     cat("🚨 Consider seeking additional help:\n")
     cat("1. Check GitHub issues: https://github.com/your-repo/issues\n")
-    cat("2. Review documentation: ?SoilSamplingTool\n")
+    cat("2. Review documentation: ?MLSampling\n")
     cat("3. Consult constitutional compliance guide\n")
     cat("4. Contact support team with diagnostic results\n")
   }
@@ -1025,4 +1025,4 @@ This troubleshooting guide provides comprehensive problem-solving for the Enhanc
 **Related Resources:**
 - `vignette("soil-sampling-examples")` for usage examples
 - `vignette("performance-optimization")` for performance tuning
-- `?SoilSamplingTool` for complete API documentation
+- `?MLSampling` for complete API documentation
