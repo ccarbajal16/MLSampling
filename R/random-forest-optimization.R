@@ -1,7 +1,7 @@
 # Random Forest Optimization Module for MLSampling
 # Implements RF-based feature importance analysis and spatial sampling optimization
 
-#' Random Forest Optimization Module for Spatial Sampling
+#' @title RandomForestOptimization
 #'
 #' @description
 #' Implements Random Forest techniques for spatial sampling optimization,

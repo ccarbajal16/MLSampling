@@ -1,7 +1,7 @@
 # Spatial Analysis Engine for MLSampling
 # Implements advanced spatial statistics and cross-validation methods
 
-#' Spatial Analysis Engine
+#' @title SpatialAnalysisEngine
 #'
 #' @description
 #' Provides advanced spatial analysis capabilities including autocorrelation detection,

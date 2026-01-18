@@ -1,7 +1,7 @@
 # Spatial Uncertainty Quantification Module for MLSampling
 # Implements comprehensive uncertainty analysis and visualization
 
-#' Spatial Uncertainty Quantification and Visualization
+#' @title SpatialUncertainty
 #'
 #' @description
 #' Provides comprehensive uncertainty quantification methods for spatial predictions

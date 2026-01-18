@@ -1,7 +1,7 @@
 # Progress Management for MLSampling
 # Implements unified progress tracking with constitutional compliance
 
-#' Progress Manager Class
+#' @title ProgressManager
 #'
 #' @description
 #' Manages progress reporting for long-running operations in MLSampling.

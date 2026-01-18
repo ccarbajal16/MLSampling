@@ -2,7 +2,7 @@
 # Main interface for machine learning-based spatial sampling optimization
 # Integrates BDL, RF, UDL, UFN, Ensemble methods, and advanced Spatial Analysis
 
-#' Machine Learning-Based Spatial Sampling Optimization Tool
+#' @title MLSampling
 #'
 #' @description
 #' Main interface for the MLSampling package. Integrates multiple machine learning models

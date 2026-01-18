@@ -1,5 +1,5 @@
 
-#' Visualization Service Class
+#' @title VisualizationService
 #'
 #' @description
 #' Service for generating ML-specific visualizations including uncertainty maps,

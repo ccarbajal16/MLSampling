@@ -1,7 +1,7 @@
 # Design Comparison Framework for MLSampling
 # Implements metrics and statistical testing for comparing sampling designs
 
-#' Design Comparison Framework
+#' @title DesignComparison
 #'
 #' @description
 #' Provides tools for comparing different sampling designs based on coverage,

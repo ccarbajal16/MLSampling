@@ -1,7 +1,7 @@
 # Resource Management for MLSampling
 # Implements memory management and batch processing capabilities
 
-#' Resource Manager Class
+#' @title ResourceManager
 #'
 #' @description
 #' Manages system resources, memory usage, and batch processing for MLSampling.

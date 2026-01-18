@@ -1,5 +1,5 @@
 
-#' Reporting Service Class
+#' @title ReportingService
 #'
 #' @description
 #' Service for generating comprehensive reports for ML sampling results.

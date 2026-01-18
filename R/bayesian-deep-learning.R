@@ -1,7 +1,7 @@
 # Bayesian Deep Learning Module for MLSampling
 # Implements BDL functionality with torch integration for uncertainty quantification
 
-#' Bayesian Deep Learning Module for Spatial Sampling Optimization
+#' @title BayesianDeepLearning
 #'
 #' @description
 #' Implements Bayesian Deep Learning techniques for spatial uncertainty quantification

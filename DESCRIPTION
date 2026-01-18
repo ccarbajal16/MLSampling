@@ -42,7 +42,10 @@ Imports:
     gridExtra,
     knitr,
     rmarkdown,
-    MASS
+    MASS,
+    microbenchmark,
+    progress,
+    pryr
 Suggests:
     testthat (>= 3.1.0),
     quickcheck (>= 0.1.0),
@@ -51,9 +54,7 @@ Suggests:
     lintr (>= 3.0.0),
     pkgdown (>= 2.0.0),
     future (>= 1.28.0),
-    progress (>= 1.2.0),
-    stars (>= 0.6.0),
-    pryr
+    stars (>= 0.6.0)
 VignetteBuilder: knitr
 URL: https://github.com/ccarbajal16/MLSampling.git
 BugReports: https://github.com/ccarbajal16/MLSampling/issues

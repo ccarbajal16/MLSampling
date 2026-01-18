@@ -2,7 +2,7 @@
 # Constitutional Compliance: Performance Excellence and Statistical Rigor
 # Comprehensive benchmarking framework for optimization algorithm comparison
 
-#' Performance Benchmarking Service for Soil Sampling Optimization
+#' @title BenchmarkingService
 #'
 #' @description
 #' Provides comprehensive performance benchmarking capabilities for comparing

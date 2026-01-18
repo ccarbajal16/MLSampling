@@ -2,7 +2,7 @@
 % Please edit documentation in R/field-data-model.R
 \name{validate_field_data_structure}
 \alias{validate_field_data_structure}
-\title{Field Data Model Validation}
+\title{Enhanced Field Data Model with ML Metadata Support}
 \usage{
 validate_field_data_structure(field_data, strict_validation = TRUE)
 }
@@ -12,20 +12,27 @@ validate_field_data_structure(field_data, strict_validation = TRUE)
 \item{strict_validation}{Logical, apply strict constitutional standards}
 }
 \value{
-Validated field data list with standardized structure
+Validated field data list with standardized structure and ML metadata
 }
 \description{
 Provides comprehensive validation for field data structures following
 constitutional principles for spatial analysis excellence. Ensures CRS
-consistency, geometry integrity, and data quality standards.
+consistency, geometry integrity, and data quality standards. Enhanced with
+ML-specific metadata support for feature importance, uncertainty maps, and
+spatial weights.
 }
 \examples{
 \dontrun{
-# Create field data
+# Create enhanced field data with ML metadata
 field_data <- list(
   boundary = sf::st_read("boundary.shp"),
   covariates = terra::rast("covariates.tif"),
-  crs = "EPSG:32633"
+  crs = "EPSG:32633",
+  ml_metadata = list(
+    feature_importance = c(0.3, 0.2, 0.5),
+    uncertainty_maps = terra::rast("uncertainty.tif"),
+    spatial_weights = matrix(c(1, 0.5, 0.5, 1), nrow = 2)
+  )
 )
 
 # Validate and standardize

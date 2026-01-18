@@ -1,7 +1,7 @@
 # ML Ensemble Manager for MLSampling
 # Implements ensemble methods and unified interface for ML modules
 
-#' ML Ensemble Manager
+#' @title MLEnsembleManager
 #'
 #' @description
 #' Manages ensemble strategies for spatial sampling optimization, combining results

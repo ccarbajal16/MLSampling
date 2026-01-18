@@ -2,7 +2,7 @@
 # Constitutional Compliance: Code Quality Excellence and User Experience Consistency
 # Centralized configuration management with constitutional standards enforcement
 
-#' Configuration Manager for Soil Sampling Tool
+#' @title ConfigManager
 #'
 #' @description
 #' Manages global configuration settings, logging, and constitutional compliance
