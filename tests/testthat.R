@@ -11,10 +11,6 @@ library(MLSampling)
 
 # Set up testing environment with constitutional compliance requirements
 options(
-  # Enable coverage tracking for 90%+ requirement
-  testthat.progress.reporter = "progress",
-  # Parallel testing configuration
-  testthat.default_check_reporter = "check_reporter",
   # Spatial testing configuration
   testthat.spatial.tolerance = 1e-6,
   # Performance testing thresholds
