@@ -120,9 +120,9 @@ library(MLSampling)
 ### Post-Installation Setup
 
 ```r
-# Verify installation and validate system environment
-validation_result <- validate_system_environment()
-if (!validation_result) {
+# Verify installation and validate system requirements
+validation_result <- validate_system_requirements()
+if (!validation_result$meets_requirements) {
   stop("System environment does not meet constitutional requirements")
 }
 
@@ -141,8 +141,8 @@ if (!torch::torch_is_installed()) {
 library(MLSampling)
 
 # Validate system for constitutional compliance
-validation_result <- validate_system_environment()
-if (!validation_result) {
+validation_result <- validate_system_requirements()
+if (!validation_result$meets_requirements) {
   stop("System environment does not meet constitutional requirements")
 }
 
@@ -157,10 +157,6 @@ tool <- create_ml_sampling_tool(
   ),
   interactive = TRUE
 )
-
-# Verify constitutional compliance
-compliance_check <- validate_constitutional_compliance(tool)
-print(compliance_check)
 ```
 
 ### 2. Working with Synthetic Data
