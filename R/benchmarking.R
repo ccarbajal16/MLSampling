@@ -21,9 +21,6 @@
 #' @field results Collected benchmarking results
 #' @field config_manager Configuration and logging manager
 #' 
-#' @import R6
-#' @import microbenchmark
-#' @import pryr
 #' @export
 BenchmarkingService <- R6::R6Class("BenchmarkingService",
   
