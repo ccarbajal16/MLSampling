@@ -159,23 +159,52 @@ tool <- create_ml_sampling_tool(
 )
 ```
 
-### 2. Working with Synthetic Data
+### 2. Creating Synthetic Test Data
 
 ```r
-# Generate constitutional-compliant synthetic data
-field_data <- generate_synthetic_field(
-  field_size = c(1000, 800),  # 1000m x 800m field
-  resolution = 50,            # 50m resolution  
-  crs = "EPSG:32633",        # UTM Zone 33N
-  constitutional_compliance = TRUE
+# Create synthetic field data for testing
+# Field data structure requires: boundary, covariates, and CRS
+
+# Define field extent (1000m x 800m)
+extent <- c(xmin = 0, xmax = 1000, ymin = 0, ymax = 800)
+
+# Create raster covariates using terra
+covariates <- terra::rast(
+  xmin = extent["xmin"], xmax = extent["xmax"],
+  ymin = extent["ymin"], ymax = extent["ymax"],
+  resolution = 50,  # 50m resolution
+  crs = "EPSG:32633"  # UTM Zone 33N
 )
 
-# Generate existing sampling locations
-existing_samples <- generate_existing_samples(
-  field_data = field_data,
-  n_samples = 25,
-  sampling_strategy = "random",
-  validate_spatial = TRUE
+# Add synthetic covariate layers
+terra::values(covariates) <- runif(terra::ncell(covariates), 0, 100)
+names(covariates) <- "elevation"
+
+# Create boundary polygon using sf
+boundary_coords <- matrix(c(
+  extent["xmin"], extent["ymin"],
+  extent["xmax"], extent["ymin"],
+  extent["xmax"], extent["ymax"],
+  extent["xmin"], extent["ymax"],
+  extent["xmin"], extent["ymin"]
+), ncol = 2, byrow = TRUE)
+
+boundary <- sf::st_polygon(list(boundary_coords)) %>%
+  sf::st_sfc(crs = "EPSG:32633") %>%
+  sf::st_sf()
+
+# Create field_data list structure
+field_data <- list(
+  boundary = boundary,
+  covariates = covariates
+)
+
+# Create existing sampling locations (random points within boundary)
+set.seed(123)
+existing_samples <- data.frame(
+  x = runif(25, extent["xmin"], extent["xmax"]),
+  y = runif(25, extent["ymin"], extent["ymax"]),
+  id = paste0("S", 1:25)
 )
 
 # Validate data structure for constitutional compliance
@@ -328,12 +357,30 @@ print(uncertainty_analysis$uncertainty_summary)
 ### 9. Loading and Validating Real Field Data
 
 ```r
-# Load real field data with constitutional validation
-real_field_data <- load_real_field_data(
-  data_path = "data/",
-  validate_crs = TRUE,
-  ensure_consistency = TRUE,
-  constitutional_compliance = TRUE
+# Load raster covariate data from files
+raster_files <- list.files("data/", pattern = "\\.tif$", full.names = TRUE)
+covariates <- terra::rast(raster_files)
+
+# Load or create boundary polygon
+# Option 1: Load from shapefile
+boundary <- sf::st_read("data/boundary.shp")
+
+# Option 2: Create from extent
+# boundary_coords <- matrix(c(
+#   xmin, ymin,
+#   xmax, ymin,
+#   xmax, ymax,
+#   xmin, ymax,
+#   xmin, ymin
+# ), ncol = 2, byrow = TRUE)
+# boundary <- sf::st_polygon(list(boundary_coords)) %>%
+#   sf::st_sfc(crs = "EPSG:32633") %>%
+#   sf::st_sf()
+
+# Create field_data structure
+real_field_data <- list(
+  boundary = boundary,
+  covariates = covariates
 )
 
 # Load existing samples from CSV
@@ -342,8 +389,7 @@ real_existing_samples <- read.csv("field_data.csv")
 # Validate real data structure with constitutional standards
 validation_result <- validate_field_data_structure(
   field_data = real_field_data,
-  strict_validation = TRUE,
-  constitutional_compliance = TRUE
+  strict_validation = TRUE
 )
 
 if (validation_result$is_valid) {
@@ -358,39 +404,27 @@ if (validation_result$is_valid) {
 ### 10. Enhanced Visualization and ML Reporting
 
 ```r
-# Generate comprehensive ML visualizations with constitutional compliance
-visualization_data <- create_ml_sampling_visualizations(
-  field_data = field_data,
-  optimization_results = list(
-    BDL = bdl_result,
-    RF = rf_result,
-    UDL = udl_result,
-    UFN = ufn_result
-  ),
-  existing_samples = existing_samples,
-  include_uncertainty_maps = TRUE,
-  constitutional_compliance = TRUE
-)
-
-# Create interactive ML analysis map
-interactive_map <- create_interactive_ml_map(
-  visualization_data = visualization_data,
-  include_covariates = TRUE,
-  include_uncertainty_layers = TRUE,
-  include_feature_importance = TRUE,
-  constitutional_compliance = TRUE
-)
-
-# Generate comprehensive ML report
-comprehensive_report <- tool$generate_ml_report(
-  result = comparison_result,
+# Generate comprehensive ML report for a single result
+bdl_report <- tool$generate_ml_report(
+  result = bdl_result,
   report_type = "comprehensive",
   include_uncertainty_analysis = TRUE,
-  include_visualizations = TRUE,
-  constitutional_compliance = TRUE
+  include_visualizations = TRUE
 )
 
-cat("ML Report saved to:", comprehensive_report$file_path, "\n")
+# Or generate a comparison report
+comparison_result <- tool$compare_designs(
+  field_data = field_data,
+  existing_samples = existing_samples,
+  n_new_samples = 25,
+  methods = c("BDL", "RF", "UDL", "UFN")
+)
+
+comparison_report <- tool$generate_report(
+  optimization_result = comparison_result
+)
+
+cat("Reports generated successfully\n")
 ```
 
 ### 11. Enhanced Command Line Interface
