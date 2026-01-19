@@ -74,7 +74,23 @@ devtools::install_github("ccarbajal16/MLSampling")
 library(MLSampling)
 ```
 
-#### Option 2: Constitutional Installation Process (Manual Dependencies)
+#### Option 2: Install using PAK (Fast and Modern)
+
+```r
+# 1. Install pak if not already installed
+if (!require(pak)) {
+  install.packages("pak")
+}
+
+# 2. Install MLSampling directly from GitHub with pak
+# pak is faster and handles dependencies more efficiently
+pak::pak("ccarbajal16/MLSampling")
+
+# 3. Load the package
+library(MLSampling)
+```
+
+#### Option 3: Constitutional Installation Process (Manual Dependencies)
 
 ```r
 # 1. Validate R version for constitutional compliance
