@@ -6,10 +6,7 @@
 #' feature importance plots, and design comparisons.
 #'
 #' @import ggplot2
-#' @import terra
-#' @import sf
 #' @import viridis
-#' @import gridExtra
 #' @export
 VisualizationService <- R6::R6Class("VisualizationService",
   public = list(

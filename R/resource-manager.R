@@ -13,8 +13,6 @@
 #' - Batch processing for large datasets
 #' - Resource-aware execution strategies
 #'
-#' @import R6
-#' @import pryr
 #' @export
 ResourceManager <- R6::R6Class("ResourceManager",
   

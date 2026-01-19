@@ -13,8 +13,6 @@
 #' - Graceful fallback when not in interactive mode
 #' - Integration with logging system
 #'
-#' @import R6
-#' @import progress
 #' @export
 ProgressManager <- R6::R6Class("ProgressManager",
   

@@ -5,8 +5,6 @@
 #' Service for generating comprehensive reports for ML sampling results.
 #' Integrates text summaries, performance metrics, and visualizations.
 #'
-#' @import rmarkdown
-#' @import knitr
 #' @export
 ReportingService <- R6::R6Class("ReportingService",
   public = list(
