@@ -524,8 +524,12 @@ spatial_rep <- assess_spatial_representativeness(
 
 ### 📚 Comprehensive Vignettes
 
-- **Package Overview**: `vignette("soil-sampling-tool-overview")` - Architectural tour and capabilities
-- **Quickstart Workflow**: `vignette("soil-sampling-tool-quickstart")` - End-to-end example using synthetic data
+- **Package Overview**: `vignette("ml-sampling-overview")` - Architectural tour and capabilities
+- **Quickstart Workflow**: `vignette("ml-sampling-quickstart")` - End-to-end example using synthetic data
+- **Practical Examples**: `vignette("ml-sampling-examples")` - Comprehensive examples and use cases
+- **Advanced Optimization**: `vignette("advanced-ml-optimization")` - Advanced ML techniques
+- **Performance Guide**: `vignette("performance-optimization")` - Performance tuning and best practices
+- **Troubleshooting**: `vignette("troubleshooting")` - Common issues and solutions
 
 ### 📖 API Documentation
 
@@ -568,7 +572,11 @@ MLSampling/
 │   └── ...                           # Additional Rd files
 ├── vignettes/              # Comprehensive documentation
 │   ├── ml-sampling-overview.Rmd       # Package overview
-│   └── ml-sampling-quickstart.Rmd     # Quickstart workflow
+│   ├── ml-sampling-quickstart.Rmd     # Quickstart workflow
+│   ├── ml-sampling-examples.Rmd       # Practical examples
+│   ├── advanced-ml-optimization.Rmd   # Advanced techniques
+│   ├── performance-optimization.Rmd   # Performance tuning
+│   └── troubleshooting.Rmd            # Problem solving guide
 ├── tests/                  # Comprehensive test suite (integration-focused)
 │   ├── testthat.R                     # Test runner
 │   └── testthat/                      # Integration tests
@@ -661,9 +669,11 @@ Constitutional graph-based implementation with:
 
 ### 🆘 Getting Help
 
-- **Overview Guide**: `vignette("soil-sampling-tool-overview")` for architecture and configuration
-- **Usage Examples**: `vignette("soil-sampling-tool-quickstart")` for a runnable workflow
-- **API Reference**: `?SoilSamplingTool` for complete function documentation
+- **Overview Guide**: `vignette("ml-sampling-overview")` - Package architecture and configuration
+- **Quickstart Guide**: `vignette("ml-sampling-quickstart")` - Step-by-step workflow examples
+- **Practical Examples**: `vignette("ml-sampling-examples")` - Real-world use cases
+- **API Reference**: `?MLSampling` - Complete function documentation for main class
+- **Troubleshooting**: `vignette("troubleshooting")` - Common issues and solutions
 
 ### 📞 Contact Information
 
