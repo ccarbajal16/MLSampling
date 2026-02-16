@@ -1,4 +1,4 @@
-# MLSampling: Machine Learning-Based Spatial Sampling Optimization Framework
+# MLSampling: Machine Learning-Based Spatial Sampling Optimization Framework <img src="man/figures/logo.png" align="right" height="139" alt="MLSampling logo" />
 
 A comprehensive R package for optimizing spatial sampling locations using advanced machine learning models including Bayesian Deep Learning (BDL), Random Forest optimization, and enhanced design comparison capabilities.
 
