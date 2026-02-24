@@ -538,10 +538,10 @@ spatial_rep <- assess_spatial_representativeness(
 ### 📖 API Documentation
 
 - **Main Tool Class**: `?MLSampling` - Complete API reference
-- **Legacy Tool Class**: `?SoilSamplingTool` - Legacy API reference (deprecated)
 - **Data Validation**: `?validate_field_data_structure` - Spatial data validation
-- **Tool Creation**: `?create_ml_sampling_tool` - Enhanced tool instantiation
-- **Legacy Tool Creation**: `?create_soil_sampling_tool` - Legacy tool creation (deprecated)
+- **Tool Creation**: `?create_ml_sampling_tool` - Tool instantiation
+- **Uncertainty Results**: `?create_uncertainty_results` - Uncertainty result structures
+- **Sampling Locations**: `?create_sampling_locations` - Sampling point structures
 
 ### 🔧 Constitutional Compliance
 
@@ -551,40 +551,68 @@ spatial_rep <- assess_spatial_representativeness(
 - **User Experience Consistency**: Consistent APIs across all functions
 - **Performance Excellence**: Memory efficiency and parallel processing
 
-## Enhanced Package Structure
+## Package Structure
 
 ```text
 MLSampling/
-├── DESCRIPTION              # Package metadata with ML requirements
-├── NAMESPACE               # Exported functions and dependencies
+├── DESCRIPTION              # Package metadata (version 0.0.1)
+├── NAMESPACE                # Exported functions and dependencies
 ├── inst/
 │   └── scripts/
-│       └── main.R                     # Optional CLI entry point
-├── R/                      # Constitutional R package structure
-│   ├── ml-sampling-tool.R             # Enhanced R6 MLSampling class
-│   ├── soil-sampling-tool.R           # Legacy R6 SoilSamplingTool class (deprecated)
-│   ├── field-data-model.R             # Spatial data validation
-│   ├── data-validation.R              # Constitutional data validation
-│   ├── config-management.R            # Configuration management
-│   ├── error-handling.R               # Constitutional error handling
-│   └── benchmarking.R                 # Performance benchmarking
-├── man/                    # Roxygen2 documentation
-│   ├── MLSampling.Rd                  # Main class documentation
-│   ├── SoilSamplingTool.Rd            # Legacy class documentation (deprecated)
-│   ├── execute_udl_optimization.Rd    # UDL helper documentation
-│   ├── execute_ufn_optimization.Rd    # UFN helper documentation
-│   └── ...                           # Additional Rd files
-├── vignettes/              # Comprehensive documentation
-│   ├── ml-sampling-overview.Rmd       # Package overview
-│   ├── ml-sampling-quickstart.Rmd     # Quickstart workflow
-│   ├── ml-sampling-examples.Rmd       # Practical examples
-│   ├── advanced-ml-optimization.Rmd   # Advanced techniques
-│   ├── performance-optimization.Rmd   # Performance tuning
-│   └── troubleshooting.Rmd            # Problem solving guide
-├── tests/                  # Comprehensive test suite (integration-focused)
-│   ├── testthat.R                     # Test runner
-│   └── testthat/                      # Integration tests
-└── examples/               # Example scripts and data templates
+│       └── main.R                          # CLI entry point
+├── R/                       # 18 R source files (~14,000 lines)
+│   ├── ml-sampling-tool.R                  # Main R6 MLSampling class
+│   ├── bayesian-deep-learning.R            # R6 BayesianDeepLearning class
+│   ├── random-forest-optimization.R        # R6 RandomForestOptimization class
+│   ├── ml-ensemble-manager.R               # R6 MLEnsembleManager class
+│   ├── design-comparison.R                 # R6 DesignComparison class
+│   ├── spatial-analysis-engine.R           # R6 SpatialAnalysisEngine class
+│   ├── spatial-uncertainty.R               # R6 SpatialUncertainty class
+│   ├── visualization-service.R             # R6 VisualizationService class
+│   ├── reporting-service.R                 # R6 ReportingService class
+│   ├── benchmarking.R                      # R6 BenchmarkingService class
+│   ├── config-management.R                 # R6 ConfigManager class
+│   ├── progress-manager.R                  # R6 ProgressManager class
+│   ├── resource-manager.R                  # R6 ResourceManager class
+│   ├── field-data-model.R                  # Spatial data validation helpers
+│   ├── data-validation.R                   # Data validation functions
+│   ├── error-handling.R                    # Standardized error classes
+│   ├── optimization-result-model.R         # ML result data structures
+│   ├── sampling-locations-model.R          # Sampling point structures
+│   └── uncertainty-quantification-model.R  # Uncertainty result structures
+├── man/                     # Roxygen2 documentation (80+ .Rd files)
+│   ├── figures/
+│   │   └── logo.png
+│   ├── MLSampling.Rd                       # Main class documentation
+│   ├── execute_udl_optimization.Rd         # UDL helper documentation
+│   ├── execute_ufn_optimization.Rd         # UFN helper documentation
+│   └── ...                                # Additional Rd files
+├── vignettes/               # 6 comprehensive guides
+│   ├── ml-sampling-overview.Rmd            # Package overview
+│   ├── ml-sampling-quickstart.Rmd          # Quickstart workflow
+│   ├── ml-sampling-examples.Rmd            # Practical examples
+│   ├── advanced-ml-optimization.Rmd        # Advanced techniques
+│   ├── performance-optimization.Rmd        # Performance tuning
+│   └── troubleshooting.Rmd                 # Problem solving guide
+├── tests/                   # 28 test files (90%+ coverage target)
+│   ├── testthat.R                          # Test runner
+│   ├── testthat/                           # Unit & integration tests (22 files)
+│   │   ├── helper-synthetic-data.R
+│   │   ├── test-integration-*.R            # End-to-end workflow tests
+│   │   ├── test-ml-sampling-tool-*.R       # MLSampling class tests
+│   │   ├── test-properties-bdl.R
+│   │   ├── test-properties-rf.R
+│   │   └── ...
+│   ├── spatial/                            # Spatial-specific tests
+│   │   ├── spatial-test-helpers.R
+│   │   ├── test-crs-handling.R
+│   │   └── test-field-data-validation.R
+│   └── performance/                        # Performance benchmarks
+│       └── performance-test-framework.R
+└── examples/                # Example scripts
+    ├── data_format_template.R
+    ├── quick_start_your_data.R
+    └── real_data_usage.R
 ```
 
 ## Constitutional ML Model Descriptions
@@ -733,7 +761,7 @@ For questions, issues, or contributions:
 ## Acknowledgments
 
 - Deep learning frameworks: PyTorch R interface
-- Spatial analysis: R spatial ecosystem (sp, sf, raster)
+- Spatial analysis: R spatial ecosystem (terra, sf)
 - Optimization: GA and GenSA packages
 - Visualization: ggplot2, plotly, leaflet
 - The R community for excellent package ecosystem
