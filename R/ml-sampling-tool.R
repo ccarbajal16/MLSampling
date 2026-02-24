@@ -543,19 +543,51 @@ MLSampling <- R6::R6Class("MLSampling",
 
       self$config_manager$log("INFO", "Starting Ensemble optimization")
 
-      ensemble_res <- self$ensemble_manager$run_ensemble(
-        field_data, existing_samples, n_new_samples, method = ensemble_method
-      )
+      # Run each method independently (each fits its own model internally)
+      individual_locs <- list()
+      for (m in methods) {
+        self$config_manager$log("INFO", paste("Ensemble: running", m))
+        res <- switch(m,
+          "BDL" = self$run_bdl(field_data, existing_samples, n_new_samples),
+          "RF"  = self$run_rf_optimization(field_data, existing_samples, n_new_samples),
+          "UDL" = self$run_udl(field_data, existing_samples, n_new_samples),
+          "UFN" = self$run_ufn(field_data, existing_samples, n_new_samples),
+          stop(paste("Unknown ensemble method member:", m))
+        )
+        locs <- res$selected_locations
+        if (inherits(locs, "sf")) {
+          coords <- sf::st_coordinates(locs)
+          locs <- data.frame(x = coords[, 1], y = coords[, 2])
+        } else {
+          locs <- locs[, c("x", "y")]
+        }
+        individual_locs[[m]] <- locs
+      }
 
-      # Convert result to sf
-      locs <- ensemble_res$locations
-      if (!is.null(field_data$metadata$crs)) {
-        locs <- sf::st_as_sf(locs, coords = c("x", "y"), crs = field_data$metadata$crs)
+      # Combine locations via the requested ensemble strategy
+      all_points <- do.call(rbind, individual_locs)
+
+      if (ensemble_method == "voting") {
+        # K-means on pooled locations → consensus centroids
+        k <- min(n_new_samples, nrow(all_points))
+        km <- kmeans(all_points, centers = k, nstart = 5)
+        ensemble_locs <- as.data.frame(km$centers)
+        names(ensemble_locs) <- c("x", "y")
+      } else {
+        # Fallback: random subsample of pooled points
+        idx <- sample(nrow(all_points), min(n_new_samples, nrow(all_points)))
+        ensemble_locs <- all_points[idx, ]
+      }
+
+      # Convert to sf when CRS is available
+      crs_val <- field_data$crs %||% field_data$metadata$crs
+      if (!is.null(crs_val)) {
+        ensemble_locs <- sf::st_as_sf(ensemble_locs, coords = c("x", "y"), crs = crs_val)
       }
 
       result <- list(
-        selected_locations = locs,
-        ensemble_performance = list(method = ensemble_method),
+        selected_locations = ensemble_locs,
+        ensemble_performance = list(method = ensemble_method, members = methods),
         algorithm_used = "Ensemble",
         constitutional_compliance = list(overall_compliant = TRUE)
       )

@@ -338,9 +338,14 @@ RandomForestOptimization <- R6::R6Class("RandomForestOptimization",
     generate_candidates = function(field_data) {
       # Use terra to sample random points from the field
       if (!is.null(field_data$boundary)) {
+        boundary_v <- if (inherits(field_data$boundary, "sf")) {
+          terra::vect(field_data$boundary)
+        } else {
+          field_data$boundary
+        }
         points_vec <- terra::spatSample(
-          field_data$boundary, 
-          size = private$config$n_candidates, 
+          boundary_v,
+          size = private$config$n_candidates,
           method = "random"
         )
         coords <- terra::crds(points_vec)

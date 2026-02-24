@@ -184,13 +184,13 @@ ReportingService <- R6::R6Class("ReportingService",
         "",
         paste("Optimization Method:", result$algorithm_used),
         paste("Number of Samples:", nrow(result$selected_locations)),
-        paste("Execution Time:", round(result$execution_time, 2), "seconds"),
+        paste("Execution Time:", if (!is.null(result$execution_time)) round(result$execution_time, 2) else "N/A", "seconds"),
         "",
         "## Performance Metrics",
         "",
         "| Metric | Value |",
         "|--------|-------|",
-        paste("| Optimization Score |", round(result$optimization_score, 4), "|")
+        paste("| Optimization Score |", if (!is.null(result$optimization_score)) round(result$optimization_score, 4) else "N/A", "|")
       )
       
       if (!is.null(result$metrics)) {

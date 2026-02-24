@@ -152,7 +152,8 @@ DesignComparison <- R6::R6Class("DesignComparison",
       # Ideally, we calculate this against a dense grid of the field
       if (!is.null(field_data$boundary)) {
         # Generate grid points within boundary for MSSD calculation
-        grid_vec <- terra::spatSample(field_data$boundary, size = 1000, method = "regular")
+        boundary_v <- if (inherits(field_data$boundary, "sf")) terra::vect(field_data$boundary) else field_data$boundary
+        grid_vec <- terra::spatSample(boundary_v, size = 1000, method = "regular")
         grid_coords <- terra::crds(grid_vec)
         
         # Distance from every grid point to nearest sample

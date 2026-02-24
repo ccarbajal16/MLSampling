@@ -280,19 +280,23 @@ validate_crs_consistency <- function(boundary, covariates) {
   tryCatch({
     result$boundary_crs <- sf::st_crs(boundary)$input
     result$covariates_crs <- terra::crs(covariates)
-    
-    # Check direct CRS match
-    result$crs_match <- (!is.na(result$boundary_crs) && 
-                         !is.na(result$covariates_crs) && 
-                         result$boundary_crs == result$covariates_crs)
-    
-    # If not direct match, check if they represent the same CRS
-    if (!result$crs_match) {
-      boundary_crs_obj <- sf::st_crs(result$boundary_crs)
-      covariates_crs_obj <- sf::st_crs(result$covariates_crs)
-      
-      result$crs_match <- sf::st_crs(boundary_crs_obj) == sf::st_crs(covariates_crs_obj)
+
+    # Compare CRS objects directly — avoids string representation mismatches
+    # (e.g. "WGS 84" vs full WKT for the same EPSG:4326 datum)
+    boundary_crs_obj   <- sf::st_crs(boundary)
+    covariates_crs_obj <- sf::st_crs(result$covariates_crs)
+    crs_equal <- isTRUE(boundary_crs_obj == covariates_crs_obj)
+
+    # Fallback: compare EPSG codes when available
+    if (!crs_equal) {
+      b_epsg <- boundary_crs_obj$epsg
+      c_epsg <- covariates_crs_obj$epsg
+      if (!is.na(b_epsg) && !is.na(c_epsg)) {
+        crs_equal <- (b_epsg == c_epsg)
+      }
     }
+
+    result$crs_match <- crs_equal
     
     # Test transformation capability
     if (!result$crs_match) {
@@ -414,14 +418,26 @@ validate_data_quality <- function(covariates, strict_validation = TRUE) {
     }
     
     # Calculate NA percentages per layer
+    # For boundary-masked rasters, cells outside the polygon are legitimately NA.
+    # We compute NA% relative to the valid (in-boundary) area only, detected as
+    # cells that are NA across ALL layers simultaneously (= outside mask).
     total_cells <- terra::ncell(covariates)
+
+    all_na_flags <- lapply(seq_len(terra::nlyr(covariates)), function(i)
+      is.na(terra::values(covariates[[i]], na.rm = FALSE)))
+    outside_mask <- Reduce(`&`, all_na_flags)
+    n_outside  <- sum(outside_mask)
+    valid_cells <- total_cells - n_outside   # cells inside the boundary
+
     result$na_percentage <- numeric(terra::nlyr(covariates))
     result$value_ranges <- list()
-    
+
     for (i in seq_len(terra::nlyr(covariates))) {
       layer_values <- terra::values(covariates[[i]], na.rm = FALSE)
-      na_count <- sum(is.na(layer_values))
-      result$na_percentage[i] <- (na_count / total_cells) * 100
+      na_count     <- sum(is.na(layer_values))
+      # Subtract outside-mask NAs; remaining are genuine internal missing values
+      internal_na  <- max(0L, na_count - n_outside)
+      result$na_percentage[i] <- if (valid_cells > 0) (internal_na / valid_cells) * 100 else 0
       
       # Get value ranges for non-NA values
       valid_values <- layer_values[!is.na(layer_values)]
