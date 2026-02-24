@@ -1,7 +1,7 @@
 Package: MLSampling
 Type: Package
 Title: Machine Learning-Based Spatial Sampling Optimization Framework
-Version: 1.0.0
+Version: 0.0.1
 Date: 2025-09-22
 Author: ML Sampling Optimization Team
 Maintainer: Carlos <carlos@example.com>

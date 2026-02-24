@@ -420,7 +420,7 @@ performance_test_suite <- create_performance_test_suite(
 
 # Run performance regression tests
 regression_results <- performance_test_suite$run_regression_tests(
-  baseline_version = "1.0.0",
+  baseline_version = "0.0.1",
   current_version = "1.1.0"
 )
 

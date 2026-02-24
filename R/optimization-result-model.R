@@ -434,7 +434,7 @@ create_result_metadata <- function(metadata = NULL) {
     memory_usage = NA_real_,
     version_info = list(
       R_version = paste(R.version$major, R.version$minor, sep = "."),
-      package_version = "1.0.0",
+      package_version = "0.0.1",
       terra_version = as.character(packageVersion("terra")),
       sf_version = as.character(packageVersion("sf"))
     ),
