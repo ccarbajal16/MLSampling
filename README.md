@@ -1,4 +1,4 @@
-# MLSampling: Machine Learning-Based Spatial Sampling Optimization Framework <img src="man/figures/logo.png" align="right" height="139" alt="MLSampling logo" />
+# MLSampling: Machine Learning-Based Spatial Sampling Optimization Framework `<img src="man/figures/logo.png" align="right" height="139" alt="MLSampling logo" />`
 
 A comprehensive R package for optimizing spatial sampling locations using advanced machine learning models including Bayesian Deep Learning (BDL), Random Forest optimization, and enhanced design comparison capabilities.
 
@@ -15,24 +15,28 @@ This framework implements a constitutional framework ensuring excellence across 
 ## Enhanced ML Models with Constitutional Compliance
 
 ### BDL (Bayesian Deep Learning) Model
+
 - Constitutional uncertainty quantification with epistemic and aleatoric uncertainty
 - Monte Carlo dropout implementation for robust uncertainty estimation
 - Advanced neural networks with constitutional performance standards
 - Comprehensive error handling and graceful degradation
 
 ### RF (Random Forest) Optimization Model
+
 - Feature importance-based sampling location optimization
 - Spatial autocorrelation integration with constitutional compliance
 - Hyperparameter tuning with performance validation
 - Constitutional spatial analysis with terra/sf integration
 
 ### UDL (Unified Deep Learning) Model - Legacy Support
+
 - Constitutional spatial analysis with terra/sf integration
 - Advanced genetic algorithms with convergence validation
 - Memory-efficient implementation with batch processing
 - Comprehensive error handling and graceful degradation
 
 ### UFN (Unified Feature Network) Model - Legacy Support
+
 - Graph Neural Networks using PyTorch integration
 - Constitutional graph connectivity validation
 - GPU acceleration with CPU fallback compliance
@@ -693,16 +697,6 @@ This package is released under [MIT License] with constitutional compliance requ
 - The R community for excellent package ecosystem
 - **Spatial Autocorrelation**: Independence assessment
 
-## Examples
-
-See `example_usage.R` for comprehensive examples including:
-
-- Complete workflow demonstration
-- Individual model usage
-- Algorithm comparison
-- Custom data integration
-- Interactive visualization
-
 ## Contributing
 
 1. Fork the repository
@@ -720,10 +714,10 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 If you use this tool in your research, please cite:
 
 ```bibtex
-@software{ml_sampling_tool_2024,
+@software{ml_sampling_tool_2026,
   title = {MLSampling: Machine Learning-Based Spatial Sampling Optimization Framework},
-  author = {ML Sampling Optimization Team},
-  year = {2024},
+  author = {Carbajal Carlos},
+  year = {2026},
   url = {https://github.com/ccarbajal16/MLSampling}
 }
 ```
@@ -732,7 +726,7 @@ If you use this tool in your research, please cite:
 
 For questions, issues, or contributions:
 
-- 📧 Email: team@mlsampling.org
+- 📧 Email: ccarbajal@educagis.com
 - 🐛 Issues: [GitHub Issues](https://github.com/ccarbajal16/MLSampling/issues)
 - 📖 Documentation: See the `vignettes/` directory for detailed technical documentation
 
