@@ -1,377 +1,316 @@
-# Real Data Usage Guide for SoilSamplingTool
-# This script shows how to use your own field data
+# =============================================================================
+# MLSampling — Real Data Workflow: Andean Basin (Peru)
+# =============================================================================
+#
+# Data in data/:
+#   basin.gpkg      — field boundary (1 polygon, WGS 84)
+#   dem_basin.tif   — Digital Elevation Model, ~68 m, WGS 84, range 3371–4732 m
+#   ndvi_basin.tif  — NDVI (Sentinel-2A), ~27 m, WGS 84, range -0.64 to 0.89
+#   savi_basin.tif  — SAVI (Sentinel-2A), ~27 m, WGS 84, range -0.03 to 0.69
+#
+# Derived covariates (computed here from DEM):
+#   slope           — terrain steepness (degrees)
+#   aspect          — slope face direction (degrees)
+#
+# Final covariate stack (5 layers at 27 m, matching paper's input structure):
+#   elevation, slope, aspect, NDVI, SAVI
+#
+# =============================================================================
 
-# Load the main SoilSamplingTool functions
-if (!exists("run_udl_enhanced")) {
-  cat("Loading SoilSamplingTool from source files...\n")
-  source("main.R")
+library(MLSampling)   # install with: devtools::install_github("ccarbajal16/MLSampling")
+library(terra)
+library(sf)
+
+# Project root — adjust if running from a different working directory
+PROJECT_ROOT <- "C:/Users/USER/OneDrive/Works/INIA-Projects/MLSampling-master"
+DATA_DIR     <- file.path(PROJECT_ROOT, "data")
+OUTPUT_DIR   <- file.path(PROJECT_ROOT, "results_basin")
+
+if (!dir.exists(OUTPUT_DIR)) dir.create(OUTPUT_DIR, recursive = TRUE)
+
+
+# =============================================================================
+# STEP 1 — Load the field boundary
+# =============================================================================
+
+cat("\n[1/6] Loading field boundary ...\n")
+
+boundary <- sf::st_read(file.path(DATA_DIR, "basin.gpkg"), quiet = TRUE)
+
+cat("  CRS     :", sf::st_crs(boundary)$input, "\n")
+cat("  Features:", nrow(boundary), "\n")
+cat("  Name    :", boundary$nombre, "\n")
+bbox <- sf::st_bbox(boundary)
+cat("  BBox    : lon [", round(bbox["xmin"], 4), ",", round(bbox["xmax"], 4), "]",
+                " lat [", round(bbox["ymin"], 4), ",", round(bbox["ymax"], 4), "]\n")
+
+
+# =============================================================================
+# STEP 2 — Load and prepare raster covariates
+# =============================================================================
+
+cat("\n[2/6] Loading and aligning raster covariates ...\n")
+
+# --- Load raw rasters
+dem  <- terra::rast(file.path(DATA_DIR, "dem_basin.tif"))
+ndvi <- terra::rast(file.path(DATA_DIR, "ndvi_basin.tif"))
+savi <- terra::rast(file.path(DATA_DIR, "savi_basin.tif"))
+
+cat("  DEM  resolution:", round(terra::res(dem)[1]  * 111320, 0), "m\n")
+cat("  NDVI resolution:", round(terra::res(ndvi)[1] * 111320, 0), "m\n")
+
+# --- Derive slope and aspect from DEM
+# (replaces the paper's 'flow accumulation' layer, which requires a hydrological DEM)
+cat("  Deriving slope and aspect from DEM ...\n")
+slope  <- terra::terrain(dem, v = "slope",  unit = "degrees")
+aspect <- terra::terrain(dem, v = "aspect", unit = "degrees")
+
+# --- Resample everything to the NDVI/SAVI reference grid (finer, ~27 m)
+#     NDVI and SAVI are already aligned; DEM-derived layers need resampling.
+reference <- ndvi   # template for spatial reference
+elevation  <- terra::resample(dem,    reference, method = "bilinear")
+slope_r    <- terra::resample(slope,  reference, method = "bilinear")
+aspect_r   <- terra::resample(aspect, reference, method = "bilinear")
+
+# --- Rename layers for clarity
+names(elevation) <- "elevation"
+names(slope_r)   <- "slope"
+names(aspect_r)  <- "aspect"
+names(ndvi)      <- "NDVI"
+names(savi)      <- "SAVI"
+
+# --- Stack into a single 5-layer SpatRaster
+covariates <- c(elevation, slope_r, aspect_r, ndvi, savi)
+cat("  Covariate stack:", terra::nlyr(covariates), "layers at",
+    round(terra::res(covariates)[1] * 111320, 0), "m resolution\n")
+cat("  Layers         :", paste(names(covariates), collapse = ", "), "\n")
+
+# --- Mask to the basin polygon
+boundary_v  <- terra::vect(boundary)    # convert sf → SpatVector for terra
+covariates  <- terra::mask(
+  terra::crop(covariates, boundary_v),
+  boundary_v
+)
+cat("  Cells inside basin:", terra::global(!is.na(covariates[[1]]), sum)[[1]], "\n")
+
+
+# =============================================================================
+# STEP 3 — Assemble field_data (the package's input format)
+# =============================================================================
+
+cat("\n[3/6] Assembling field_data list ...\n")
+
+field_data <- list(
+  boundary   = boundary,                          # sf polygon
+  covariates = covariates,                        # 5-layer masked SpatRaster
+  # validate_field_data_structure() requires these three at the top level:
+  crs        = sf::st_crs(boundary)$input,        # "WGS 84"
+  resolution = terra::res(covariates)[1],         # cell size in degrees (~0.000274)
+  extent     = as.vector(terra::ext(covariates)), # c(xmin, xmax, ymin, ymax)
+  metadata   = list(
+    location   = "Andean basin, Peru",
+    layers     = names(covariates)
+  )
+)
+
+# Validate before running any model.
+# validate_field_data_structure() either stop()s on failure or returns
+# the standardised field_data (with crs/resolution/extent populated).
+field_data <- tryCatch(
+  validate_field_data_structure(field_data, strict_validation = FALSE),
+  error = function(e) {
+    stop("field_data validation failed: ", conditionMessage(e))
+  }
+)
+cat("  field_data validation passed\n")
+if (length(field_data$validation_log$warnings) > 0) {
+  cat("  Warnings:\n")
+  for (w in field_data$validation_log$warnings) cat("    -", w, "\n")
 }
 
-# Load required packages
-required_packages <- c("terra", "sf")
-for (pkg in required_packages) {
-  if (!require(pkg, character.only = TRUE, quietly = TRUE)) {
-    cat("Installing", pkg, "...\n")
-    install.packages(pkg)
-    library(pkg, character.only = TRUE)
-  }
-}
 
-# ================================================================
-# STEP 1: DATA PREPARATION
-# ================================================================
+# =============================================================================
+# STEP 4 — Existing sample locations
+# =============================================================================
+#
+# If you have real GPS points from previous field campaigns, load them here:
+#
+#   existing_samples <- read.csv("path/to/your_samples.csv")
+#   # CSV must contain columns x (longitude) and y (latitude) in WGS 84
+#
+# For this demonstration we generate random points inside the basin.
 
-# Your data should include:
-# 1. Field covariates (raster data): elevation, NDVI, slope, etc.
-# 2. Existing sampling locations (CSV/shapefile): x, y coordinates
+cat("\n[4/6] Preparing existing sample locations ...\n")
 
-# Example data structure:
-# data/
-# ├── elevation.tif       # Digital Elevation Model
-# ├── ndvi.tif           # Normalized Difference Vegetation Index
-# ├── slope.tif          # Slope values
-# ├── clay.tif           # Soil clay content (optional)
-# ├── ph.tif             # Soil pH (optional)
-# └── existing_samples.csv # Your current sampling points
+N_EXISTING <- 15   # <- replace with nrow(existing_samples) when using real data
 
-# ================================================================
-# STEP 2: LOAD YOUR FIELD DATA
-# ================================================================
+set.seed(42)
+random_pts <- sf::st_sample(boundary, size = N_EXISTING, type = "random")
+existing_samples <- data.frame(
+  x = sf::st_coordinates(random_pts)[, 1],
+  y = sf::st_coordinates(random_pts)[, 2]
+)
 
-load_your_field_data <- function(data_directory) {
-  
-  cat("Loading field data from:", data_directory, "\n")
-  
-  # Method 1: Load individual raster files
-  raster_files <- list.files(data_directory, pattern = "\\.tif$", full.names = TRUE)
-  
-  if (length(raster_files) == 0) {
-    stop("No .tif files found in the directory")
-  }
-  
-  cat("Found raster files:\n")
-  print(basename(raster_files))
-  
-  # Load and stack rasters
-  field_rasters <- terra::rast(raster_files)
-  
-  # Set names based on file names
-  names(field_rasters) <- tools::file_path_sans_ext(basename(raster_files))
-  
-  # Validate CRS
-  if (is.na(terra::crs(field_rasters))) {
-    warning("No CRS found in raster data. Setting default to UTM Zone 33N")
-    terra::crs(field_rasters) <- "EPSG:32633"
-  }
-  
-  cat("✅ Loaded", terra::nlyr(field_rasters), "raster layers\n")
-  cat("CRS:", terra::crs(field_rasters), "\n")
-  cat("Extent:", as.character(terra::ext(field_rasters)), "\n")
-  
-  return(field_rasters)
-}
+cat("  Using", nrow(existing_samples), "existing sample locations",
+    ifelse(N_EXISTING == 15, "(synthetic — replace with your GPS data)", ""), "\n")
 
-# ================================================================
-# STEP 3: LOAD YOUR EXISTING SAMPLES
-# ================================================================
 
-load_your_existing_samples <- function(sample_file, field_data_crs) {
-  
-  cat("Loading existing samples from:", sample_file, "\n")
-  
-  # Determine file type and load accordingly
-  file_ext <- tools::file_ext(sample_file)
-  
-  if (file_ext == "csv") {
-    # Load from CSV
-    samples <- read.csv(sample_file)
-    
-    # Check required columns
-    required_cols <- c("x", "y")
-    missing_cols <- setdiff(required_cols, names(samples))
-    
-    if (length(missing_cols) > 0) {
-      # Try alternative column names
-      if ("longitude" %in% names(samples) && "latitude" %in% names(samples)) {
-        samples$x <- samples$longitude
-        samples$y <- samples$latitude
-      } else if ("X" %in% names(samples) && "Y" %in% names(samples)) {
-        samples$x <- samples$X
-        samples$y <- samples$Y
-      } else {
-        stop("CSV must contain 'x', 'y' or 'X', 'Y' or 'longitude', 'latitude' columns")
-      }
-    }
-    
-    # Convert to sf object
-    samples_sf <- sf::st_as_sf(samples, coords = c("x", "y"))
-    
-    # Set CRS (assume geographic if not specified)
-    if (is.na(sf::st_crs(samples_sf))) {
-      sf::st_crs(samples_sf) <- 4326  # WGS84
-    }
-    
-  } else if (file_ext %in% c("shp", "gpkg")) {
-    # Load from shapefile or geopackage
-    samples_sf <- sf::st_read(sample_file)
-    
-  } else {
-    stop("Unsupported file format. Use CSV, SHP, or GPKG")
-  }
-  
-  # Transform to match field data CRS
-  if (!sf::st_crs(samples_sf) == sf::st_crs(field_data_crs)) {
-    cat("Transforming samples CRS to match field data\n")
-    samples_sf <- sf::st_transform(samples_sf, field_data_crs)
-  }
-  
-  # Extract coordinates
-  coords <- sf::st_coordinates(samples_sf)
-  samples_df <- data.frame(
-    x = coords[, 1],
-    y = coords[, 2]
-  )
-  
-  # Add any additional attributes
-  if (ncol(samples_sf) > 1) {
-    attr_data <- sf::st_drop_geometry(samples_sf)
-    samples_df <- cbind(samples_df, attr_data)
-  }
-  
-  cat("✅ Loaded", nrow(samples_df), "existing samples\n")
-  
-  return(samples_df)
-}
+# =============================================================================
+# STEP 5 — Run sampling optimisation
+# =============================================================================
 
-# ================================================================
-# STEP 4: VALIDATE YOUR DATA
-# ================================================================
+cat("\n[5/6] Running ML-based sampling optimisation ...\n")
 
-validate_your_data <- function(field_data, existing_samples) {
-  
-  cat("🔍 Validating your data...\n")
-  
-  # Use the built-in validation function
-  validation_result <- validate_field_data_structure(
-    field_data = field_data,
-    strict_validation = TRUE
-  )
-  
-  if (!validation_result$is_valid) {
-    cat("❌ Data validation issues found:\n")
-    for (issue in validation_result$issues) {
-      cat("  -", issue, "\n")
-    }
-    return(FALSE)
-  }
-  
-  # Check if samples fall within field extent
-  field_extent <- terra::ext(field_data)
-  samples_within <- existing_samples$x >= field_extent[1] && 
-                   existing_samples$x <= field_extent[2] &&
-                   existing_samples$y >= field_extent[3] && 
-                   existing_samples$y <= field_extent[4]
-  
-  if (!all(samples_within)) {
-    warning("Some existing samples fall outside field data extent")
-  }
-  
-  cat("✅ Data validation passed\n")
-  return(TRUE)
-}
+N_NEW <- 20   # number of new sample locations to select
 
-# ================================================================
-# STEP 5: RUN OPTIMIZATION WITH YOUR DATA
-# ================================================================
+tool <- create_ml_sampling_tool(
+  config = list(log_level = "INFO", progress_feedback = TRUE)
+)
 
-run_optimization_with_your_data <- function(field_data, existing_samples, 
-                                           n_new_samples = 25, 
-                                           method = "UDL") {
-  
-  cat("🚀 Running optimization with your data...\n")
-  
-  # Create enhanced tool
-  tool <- create_soil_sampling_tool(
-    config = list(
-      log_level = "INFO",
-      validation_strict = TRUE,
-      progress_feedback = TRUE
-    )
-  )
-  
-  # Run optimization based on method
-  if (method == "UDL") {
-    
-    result <- tool$run_udl(
-      field_data = field_data,
-      existing_samples = existing_samples,
-      n_new_samples = n_new_samples,
-      optimization_method = "genetic",
-      max_iter = 100,
-      save_csv = TRUE
-    )
-    
-  } else if (method == "UFN") {
-    
-    result <- tool$run_ufn(
-      field_data = field_data,
-      existing_samples = existing_samples,
-      n_new_samples = n_new_samples,
-      graph_connectivity = "delaunay",
-      save_csv = TRUE
-    )
-    
-  } else if (method == "compare") {
-    
-    result <- tool$compare_models(
-      field_data = field_data,
-      existing_samples = existing_samples,
-      n_new_samples = n_new_samples,
-      algorithms = c("UDL", "UFN")
-    )
-    
-  }
-  
-  cat("✅ Optimization completed!\n")
-  return(result)
-}
+# ---------------------------------------------------------------------------
+# Option A: Bayesian Deep Learning (BDL)
+#   - Targets locations with highest EPISTEMIC uncertainty
+#   - Best when you have a limited budget and want to focus on knowledge gaps
+# ---------------------------------------------------------------------------
+cat("\n  --- BDL (Bayesian Deep Learning) ---\n")
 
-# ================================================================
-# STEP 6: COMPLETE WORKFLOW EXAMPLE
-# ================================================================
-
-analyze_your_field <- function(data_directory, 
-                              existing_samples_file,
-                              n_new_samples = 25,
-                              output_directory = "results") {
-  
-  cat("🌾 Starting analysis of your field data...\n\n")
-  
-  # Create output directory
-  if (!dir.exists(output_directory)) {
-    dir.create(output_directory, recursive = TRUE)
-  }
-  
-  # Step 1: Load field data
-  field_data <- load_your_field_data(data_directory)
-  
-  # Step 2: Load existing samples
-  existing_samples <- load_your_existing_samples(
-    existing_samples_file, 
-    terra::crs(field_data)
-  )
-  
-  # Step 3: Validate data
-  if (!validate_your_data(field_data, existing_samples)) {
-    stop("Data validation failed. Please check your data.")
-  }
-  
-  # Step 4: Run optimization
-  cat("\n📊 Running UDL optimization...\n")
-  udl_result <- run_optimization_with_your_data(
-    field_data, existing_samples, n_new_samples, "UDL"
-  )
-  
-  cat("\n📊 Running UFN optimization...\n")
-  ufn_result <- run_optimization_with_your_data(
-    field_data, existing_samples, n_new_samples, "UFN"
-  )
-  
-  cat("\n📊 Comparing models...\n")
-  comparison <- run_optimization_with_your_data(
-    field_data, existing_samples, n_new_samples, "compare"
-  )
-  
-  # Step 5: Export results
-  cat("\n💾 Exporting results...\n")
-  
-  # Save optimized coordinates
-  write.csv(udl_result$new_locations, 
-           file.path(output_directory, "udl_new_locations.csv"), 
-           row.names = FALSE)
-  
-  write.csv(ufn_result$new_locations, 
-           file.path(output_directory, "ufn_new_locations.csv"), 
-           row.names = FALSE)
-  
-  # Save comparison report
-  write.csv(comparison$performance_summary, 
-           file.path(output_directory, "model_comparison.csv"), 
-           row.names = FALSE)
-  
-  # Step 6: Create visualizations
-  cat("\n📈 Creating visualizations...\n")
-  
-  # Create visualization
-  visualization_data <- create_sampling_visualizations(
-    field_data = field_data,
-    optimization_results = list(UDL = udl_result, UFN = ufn_result),
-    existing_samples = existing_samples
-  )
-  
-  # Save plots
-  ggsave(file.path(output_directory, "sampling_locations_map.png"), 
-         visualization_data$spatial_plot, 
-         width = 12, height = 8, dpi = 300)
-  
-  cat("✅ Analysis complete! Results saved to:", output_directory, "\n")
-  
-  return(list(
-    field_data = field_data,
+t_bdl <- system.time({
+  bdl_result <- tool$run_bdl(
+    field_data       = field_data,
     existing_samples = existing_samples,
-    udl_result = udl_result,
-    ufn_result = ufn_result,
-    comparison = comparison,
-    visualizations = visualization_data
-  ))
-}
-
-# ================================================================
-# USAGE EXAMPLES
-# ================================================================
-
-# Example 1: Basic usage with your data
-if (FALSE) {  # Set to TRUE to run
-  
-  # Analyze your field
-  results <- analyze_your_field(
-    data_directory = "C:/path/to/your/raster/data/",
-    existing_samples_file = "C:/path/to/your/existing_samples.csv",
-    n_new_samples = 30,
-    output_directory = "my_field_results"
+    n_new_samples    = N_NEW,
+    uncertainty_type = "epistemic",   # or "aleatoric", "total"
+    mc_iterations    = 100,
+    save_csv         = FALSE
   )
-  
-  # View results
-  print(results$comparison$recommendations)
-  
-}
+})
 
-# Example 2: Step-by-step approach
-if (FALSE) {  # Set to TRUE to run
-  
-  # Load your data
-  my_field <- load_your_field_data("data/")
-  my_samples <- load_your_existing_samples("field_data.csv", terra::crs(my_field))
-  
-  # Validate
-  validate_your_data(my_field, my_samples)
-  
-  # Create tool
-  tool <- create_soil_sampling_tool()
-  
-  # Run single optimization
-  result <- tool$run_udl(
-    field_data = my_field,
-    existing_samples = my_samples,
-    n_new_samples = 25
+cat("  BDL selected:", nrow(bdl_result$selected_locations), "locations\n")
+cat("  Execution time:", round(t_bdl["elapsed"], 2), "s\n")
+
+# ---------------------------------------------------------------------------
+# Option B: Random Forest (RF)
+#   - Maximises coverage in the feature space of the most important covariates
+#   - Best when you want to know which variables drive spatial variability
+# ---------------------------------------------------------------------------
+cat("\n  --- RF (Random Forest) ---\n")
+
+t_rf <- system.time({
+  rf_result <- tool$run_rf_optimization(
+    field_data       = field_data,
+    existing_samples = existing_samples,
+    n_new_samples    = N_NEW
   )
-  
-  # View results
-  print(result$metrics)
-  head(result$new_locations)
-  
+})
+
+cat("  RF selected:", nrow(rf_result$selected_locations), "locations\n")
+cat("  Execution time:", round(t_rf["elapsed"], 2), "s\n")
+
+# ---------------------------------------------------------------------------
+# Option C: UDL (Unified Deep Learning) — optimisation strategy
+#   NOTE: The genetic/simulated_annealing variants are currently under
+#   development (stub implementations). "greedy" is the active path.
+#   See R/ml-sampling-tool.R:run_greedy_optimization for the current logic.
+# ---------------------------------------------------------------------------
+cat("\n  --- UDL (greedy, current implementation) ---\n")
+
+udl_result <- tool$run_udl(
+  field_data          = field_data,
+  existing_samples    = existing_samples,
+  n_new_samples       = N_NEW,
+  optimization_method = "greedy"   # "genetic" and "simulated_annealing" are stubs
+)
+
+cat("  UDL selected:", nrow(udl_result$selected_locations), "locations\n")
+
+# ---------------------------------------------------------------------------
+# Option D: Ensemble (BDL + RF consensus)
+#   - Combines both models via voting for a robust, method-agnostic design
+# ---------------------------------------------------------------------------
+cat("\n  --- Ensemble (BDL + RF voting) ---\n")
+
+ensemble_result <- tool$run_ensemble(
+  field_data       = field_data,
+  existing_samples = existing_samples,
+  n_new_samples    = N_NEW,
+  methods          = c("BDL", "RF"),
+  ensemble_method  = "voting"
+)
+
+cat("  Ensemble selected:", nrow(ensemble_result$selected_locations), "locations\n")
+
+
+# =============================================================================
+# STEP 6 — Export results
+# =============================================================================
+
+cat("\n[6/6] Exporting results to:", OUTPUT_DIR, "\n")
+
+# --- Save coordinates as CSV (field-ready, one row per new sample point)
+tool$save_coordinates_to_csv(
+  bdl_result,
+  file_path = file.path(OUTPUT_DIR, "bdl_new_locations.csv")
+)
+
+tool$save_coordinates_to_csv(
+  rf_result,
+  file_path = file.path(OUTPUT_DIR, "rf_new_locations.csv")
+)
+
+tool$save_coordinates_to_csv(
+  ensemble_result,
+  file_path = file.path(OUTPUT_DIR, "ensemble_new_locations.csv")
+)
+
+# --- Manual CSV export (fallback / for inspection)
+write.csv(
+  bdl_result$selected_locations,
+  file.path(OUTPUT_DIR, "bdl_selected_locations_raw.csv"),
+  row.names = FALSE
+)
+
+# --- HTML report with interactive maps and methodology notes
+tool$generate_ml_report(
+  bdl_result,
+  output_dir = OUTPUT_DIR
+)
+
+cat("\nDone! Files written to:", OUTPUT_DIR, "\n")
+cat("  bdl_new_locations.csv      — BDL sample coordinates\n")
+cat("  rf_new_locations.csv       — RF sample coordinates\n")
+cat("  ensemble_new_locations.csv — Ensemble sample coordinates\n")
+cat("  *.html                     — Interactive HTML report\n")
+
+
+# =============================================================================
+# QUICK INSPECTION
+# =============================================================================
+
+cat("\n=== BDL result summary ===\n")
+cat("Locations (first 5 rows):\n")
+print(head(bdl_result$selected_locations, 5))
+
+if (!is.null(bdl_result$uncertainties)) {
+  cat("\nUncertainty components available:",
+      paste(names(bdl_result$uncertainties), collapse = ", "), "\n")
 }
 
-cat("📋 Real data usage guide loaded!\n")
-cat("Use analyze_your_field() for complete workflow\n")
-cat("Or follow step-by-step examples above\n")
+if (!is.null(rf_result$feature_importance) &&
+    length(rf_result$feature_importance) > 0) {
+  cat("\n=== RF feature importance ===\n")
+  imp <- rf_result$feature_importance
+  if (is.data.frame(imp) && all(c("feature", "importance") %in% names(imp))) {
+    imp_sorted <- imp[order(-imp$importance), ]
+    for (i in seq_len(nrow(imp_sorted))) {
+      cat(sprintf("  %-12s %.3f\n", imp_sorted$feature[i], imp_sorted$importance[i]))
+    }
+  } else if (is.numeric(imp) && !is.null(names(imp))) {
+    imp_sorted <- sort(imp, decreasing = TRUE)
+    for (nm in names(imp_sorted)) {
+      cat(sprintf("  %-12s %.3f\n", nm, imp_sorted[[nm]]))
+    }
+  }
+}
+
+cat("\n=== Covariate stack summary ===\n")
+print(covariates)
