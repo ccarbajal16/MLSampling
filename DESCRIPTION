@@ -44,8 +44,7 @@ Imports:
     rmarkdown,
     MASS,
     microbenchmark,
-    progress,
-    pryr
+    progress
 Suggests:
     testthat (>= 3.1.0),
     quickcheck (>= 0.1.0),
@@ -54,7 +53,10 @@ Suggests:
     lintr (>= 3.0.0),
     pkgdown (>= 2.0.0),
     future (>= 1.28.0),
-    stars (>= 0.6.0)
+    stars (>= 0.6.0),
+    pryr
+Remotes:
+    hadley/pryr
 VignetteBuilder: knitr
 URL: https://github.com/ccarbajal16/MLSampling.git
 BugReports: https://github.com/ccarbajal16/MLSampling/issues
