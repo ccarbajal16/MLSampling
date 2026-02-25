@@ -1,0 +1,126 @@
+url: https://ccarbajal16.github.io/MLSampling/
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+  bslib:
+    primary: "#2C7BB6"
+    link-color: "#1A6B9A"
+    pkgdown-nav-height: 70px
+  includes:
+    in_header: |
+      <meta name="description" content="MLSampling: Machine Learning-Based Spatial Sampling Optimization for Precision Agriculture"/>
+
+home:
+  title: "MLSampling • ML-Based Spatial Sampling Optimization"
+  description: >
+    An R package for optimizing soil sampling locations using Bayesian Deep Learning (BDL),
+    Random Forest (RF), Unified Deep Learning (UDL), Unified Feature Network (UFN),
+    and ensemble methods for precision agriculture.
+  links:
+    - text: Report a bug
+      href: https://github.com/ccarbajal16/MLSampling/issues
+  sidebar:
+    structure: [links, license, community, citation, authors, dev]
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [search, github]
+  components:
+    github:
+      icon: fab fa-github
+      href: https://github.com/ccarbajal16/MLSampling
+      aria-label: GitHub repository
+
+reference:
+  - title: "Main Interface"
+    desc: >
+      Primary entry point for the MLSampling framework. Use `create_ml_sampling_tool()`
+      to create a fully configured `MLSampling` R6 instance that integrates BDL, RF,
+      UDL, UFN, and ensemble optimization methods.
+    contents:
+      - MLSampling
+      - create_ml_sampling_tool
+      - SoilSamplingTool
+      - create_soil_sampling_tool
+
+  - title: "Service Classes"
+    desc: >
+      Supporting R6 service classes for configuration management, benchmarking,
+      progress tracking, resource management, visualization, and reporting.
+    contents:
+      - BenchmarkingService
+      - create_benchmarking_service
+      - ConfigManager
+      - create_default_config_manager
+      - ProgressManager
+      - create_progress_manager
+      - ReportingService
+      - ResourceManager
+      - create_resource_manager
+      - VisualizationService
+
+  - title: "Field Data Validation"
+    desc: >
+      Functions for validating system requirements, field data structures,
+      CRS consistency, and ML-related spatial data quality.
+    contents:
+      - validate_system_requirements
+      - validate_field_data_structure
+      - validate_field_data
+      - validate_crs_consistency
+      - validate_ml_data
+
+  - title: "Sampling & Result Validation"
+    desc: >
+      Validation functions for sampling location sets, optimization results,
+      and uncertainty quantification outputs.
+    contents:
+      - validate_sampling_locations
+      - validate_sampling_locations_model
+      - validate_optimization_result
+      - validate_ml_optimization_result
+      - validate_uncertainty_results
+
+  - title: "Data Structures"
+    desc: >
+      Factory functions for creating standardized result objects used throughout
+      the optimization pipeline.
+    contents:
+      - create_sampling_locations
+      - create_uncertainty_results
+      - create_spatial_uncertainty
+      - create_ml_optimization_result
+      - create_optimization_result
+
+  - title: "Error Handling"
+    desc: >
+      Structured error classes and handler utilities for robust exception management.
+      All domain errors inherit from `MLSamplingError`.
+    contents:
+      - MLSamplingError
+      - BDLError
+      - RFError
+      - SpatialError
+      - ResourceError
+      - ConfigError
+      - ValidationError
+      - raise_error
+      - with_error_handling
+
+articles:
+  - title: "Getting Started"
+    navbar: "Getting Started"
+    contents:
+      - ml-sampling-quickstart
+
+  - title: "Advanced Usage"
+    navbar: "Advanced Usage"
+    contents:
+      - advanced-ml-optimization
+
+footer:
+  structure:
+    left:  developed_by
+    right: built_with

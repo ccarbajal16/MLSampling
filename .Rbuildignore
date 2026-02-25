@@ -4,3 +4,6 @@
 ^\.github$
 ^package_build\.R$
 ^\.git$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

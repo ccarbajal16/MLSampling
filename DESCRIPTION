@@ -58,5 +58,6 @@ Suggests:
 Remotes:
     hadley/pryr
 VignetteBuilder: knitr
-URL: https://github.com/ccarbajal16/MLSampling.git
+Config/Needs/website: pkgdown
+URL: https://ccarbajal16.github.io/MLSampling/, https://github.com/ccarbajal16/MLSampling
 BugReports: https://github.com/ccarbajal16/MLSampling/issues
