@@ -34,6 +34,7 @@ navbar:
       aria-label: GitHub repository
 
 reference:
+  # -----------------------------------------------------------------------
   - title: "Main Interface"
     desc: >
       Primary entry point for the MLSampling framework. Use `create_ml_sampling_tool()`
@@ -45,6 +46,20 @@ reference:
       - SoilSamplingTool
       - create_soil_sampling_tool
 
+  # -----------------------------------------------------------------------
+  - title: "ML Model Classes"
+    desc: >
+      R6 classes implementing the individual ML models. These are instantiated
+      automatically by `MLSampling` but can also be used directly.
+    contents:
+      - BayesianDeepLearning
+      - RandomForestOptimization
+      - MLEnsembleManager
+      - DesignComparison
+      - SpatialAnalysisEngine
+      - SpatialUncertainty
+
+  # -----------------------------------------------------------------------
   - title: "Service Classes"
     desc: >
       Supporting R6 service classes for configuration management, benchmarking,
@@ -61,6 +76,7 @@ reference:
       - create_resource_manager
       - VisualizationService
 
+  # -----------------------------------------------------------------------
   - title: "Field Data Validation"
     desc: >
       Functions for validating system requirements, field data structures,
@@ -72,6 +88,7 @@ reference:
       - validate_crs_consistency
       - validate_ml_data
 
+  # -----------------------------------------------------------------------
   - title: "Sampling & Result Validation"
     desc: >
       Validation functions for sampling location sets, optimization results,
@@ -83,6 +100,7 @@ reference:
       - validate_ml_optimization_result
       - validate_uncertainty_results
 
+  # -----------------------------------------------------------------------
   - title: "Data Structures"
     desc: >
       Factory functions for creating standardized result objects used throughout
@@ -94,11 +112,13 @@ reference:
       - create_ml_optimization_result
       - create_optimization_result
 
+  # -----------------------------------------------------------------------
   - title: "Error Handling"
     desc: >
-      Structured error classes and handler utilities for robust exception management.
-      All domain errors inherit from `MLSamplingError`.
+      Structured error class hierarchy and handler utilities for robust exception
+      management. All domain errors inherit from `MLSamplingError`.
     contents:
+      - MLSamplingErrors
       - MLSamplingError
       - BDLError
       - RFError
@@ -106,8 +126,17 @@ reference:
       - ResourceError
       - ConfigError
       - ValidationError
+      - create_error
       - raise_error
       - with_error_handling
+
+  # -----------------------------------------------------------------------
+  - title: "Internal Functions"
+    desc: >
+      Low-level helper functions used internally by the package. Documented here
+      for developer reference.
+    contents:
+      - everything()
 
 articles:
   - title: "Getting Started"
