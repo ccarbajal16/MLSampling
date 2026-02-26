@@ -3,8 +3,8 @@ Type: Package
 Title: Machine Learning-Based Spatial Sampling Optimization Framework
 Version: 0.0.1
 Date: 2025-09-22
-Author: ML Sampling Optimization Team
-Maintainer: Carlos <carlos@example.com>
+Author: Carlos Carbajal
+Maintainer: Carlos <ccarbajal@educagis.com>
 Description: Comprehensive machine learning-based spatial sampling optimization framework integrating 
     Bayesian Deep Learning (BDL), Random Forest optimization, Unified Deep Learning (UDL), and 
     Unified Feature Network (UFN) models. Provides advanced ML techniques for uncertainty quantification, 
