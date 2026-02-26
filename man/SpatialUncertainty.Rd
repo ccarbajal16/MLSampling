@@ -40,7 +40,6 @@ maps <- uncertainty$create_uncertainty_maps(uncertainties, field_data)
 \dontrun{
 uncertainty <- SpatialUncertainty$new()
 }
-Calculate comprehensive uncertainty estimates
 
 
 ## ------------------------------------------------
@@ -54,7 +53,6 @@ uncertainties <- uncertainty$calculate_uncertainties(
   uncertainty_types = c("epistemic", "aleatoric", "total")
 )
 }
-Generate confidence intervals for predictions
 
 
 ## ------------------------------------------------
@@ -68,7 +66,6 @@ intervals <- uncertainty$generate_confidence_intervals(
   method = "normal"
 )
 }
-Create spatial uncertainty maps
 
 
 ## ------------------------------------------------
@@ -82,7 +79,6 @@ maps <- uncertainty$create_uncertainty_maps(
   map_types = c("epistemic", "total")
 )
 }
-Visualize uncertainty estimates
 
 
 ## ------------------------------------------------
@@ -96,7 +92,6 @@ plots <- uncertainty$visualize_uncertainty(
   interactive = TRUE
 )
 }
-Assess uncertainty calibration
 
 
 ## ------------------------------------------------
@@ -110,7 +105,6 @@ calibration <- uncertainty$assess_calibration(
   calibration_method = "reliability_diagram"
 )
 }
-Calculate coverage probability
 
 
 ## ------------------------------------------------
@@ -180,7 +174,6 @@ coverage <- uncertainty$calculate_coverage_probability(
 \preformatted{\dontrun{
 uncertainty <- SpatialUncertainty$new()
 }
-Calculate comprehensive uncertainty estimates
 
 }
 \if{html}{\out{</div>}}
@@ -223,7 +216,6 @@ uncertainties <- uncertainty$calculate_uncertainties(
   uncertainty_types = c("epistemic", "aleatoric", "total")
 )
 }
-Generate confidence intervals for predictions
 
 }
 \if{html}{\out{</div>}}
@@ -266,7 +258,6 @@ intervals <- uncertainty$generate_confidence_intervals(
   method = "normal"
 )
 }
-Create spatial uncertainty maps
 
 }
 \if{html}{\out{</div>}}
@@ -312,7 +303,6 @@ maps <- uncertainty$create_uncertainty_maps(
   map_types = c("epistemic", "total")
 )
 }
-Visualize uncertainty estimates
 
 }
 \if{html}{\out{</div>}}
@@ -355,7 +345,6 @@ plots <- uncertainty$visualize_uncertainty(
   interactive = TRUE
 )
 }
-Assess uncertainty calibration
 
 }
 \if{html}{\out{</div>}}
@@ -398,7 +387,6 @@ calibration <- uncertainty$assess_calibration(
   calibration_method = "reliability_diagram"
 )
 }
-Calculate coverage probability
 
 }
 \if{html}{\out{</div>}}

@@ -41,7 +41,6 @@ epistemic <- bdl$epistemic_uncertainty(predictions)
 bdl <- BayesianDeepLearning$new()
 bdl_custom <- BayesianDeepLearning$new(config = list(dropout_rate = 0.2))
 }
-Fit BDL model to spatial data
 
 
 ## ------------------------------------------------
@@ -56,7 +55,6 @@ model <- bdl$fit_model(
   epochs = 100
 )
 }
-Predict with uncertainty quantification
 
 
 ## ------------------------------------------------
@@ -69,7 +67,6 @@ predictions <- bdl$predict_with_uncertainty(
   n_samples = 100
 )
 }
-Monte Carlo Dropout prediction
 
 
 ## ------------------------------------------------
@@ -84,7 +81,6 @@ mc_predictions <- bdl$mc_dropout_predict(
   dropout_rate = 0.1
 )
 }
-Variational inference for parameter uncertainty
 
 
 ## ------------------------------------------------
@@ -98,7 +94,6 @@ vi_result <- bdl$variational_inference(
   n_samples = 1000
 )
 }
-Calculate epistemic uncertainty
 
 
 ## ------------------------------------------------
@@ -108,7 +103,6 @@ Calculate epistemic uncertainty
 \dontrun{
 epistemic <- bdl$epistemic_uncertainty(predictions)
 }
-Calculate aleatoric uncertainty
 
 
 ## ------------------------------------------------
@@ -118,7 +112,6 @@ Calculate aleatoric uncertainty
 \dontrun{
 aleatoric <- bdl$aleatoric_uncertainty(predictions)
 }
-Calculate total uncertainty
 
 
 ## ------------------------------------------------
@@ -190,7 +183,6 @@ total <- bdl$total_uncertainty(predictions)
 bdl <- BayesianDeepLearning$new()
 bdl_custom <- BayesianDeepLearning$new(config = list(dropout_rate = 0.2))
 }
-Fit BDL model to spatial data
 
 }
 \if{html}{\out{</div>}}
@@ -243,7 +235,6 @@ model <- bdl$fit_model(
   epochs = 100
 )
 }
-Predict with uncertainty quantification
 
 }
 \if{html}{\out{</div>}}
@@ -291,7 +282,6 @@ predictions <- bdl$predict_with_uncertainty(
   n_samples = 100
 )
 }
-Monte Carlo Dropout prediction
 
 }
 \if{html}{\out{</div>}}
@@ -338,7 +328,6 @@ mc_predictions <- bdl$mc_dropout_predict(
   dropout_rate = 0.1
 )
 }
-Variational inference for parameter uncertainty
 
 }
 \if{html}{\out{</div>}}
@@ -384,7 +373,6 @@ vi_result <- bdl$variational_inference(
   n_samples = 1000
 )
 }
-Calculate epistemic uncertainty
 
 }
 \if{html}{\out{</div>}}
@@ -415,7 +403,6 @@ Vector of epistemic uncertainty estimates
 \preformatted{\dontrun{
 epistemic <- bdl$epistemic_uncertainty(predictions)
 }
-Calculate aleatoric uncertainty
 
 }
 \if{html}{\out{</div>}}
@@ -446,7 +433,6 @@ Vector of aleatoric uncertainty estimates
 \preformatted{\dontrun{
 aleatoric <- bdl$aleatoric_uncertainty(predictions)
 }
-Calculate total uncertainty
 
 }
 \if{html}{\out{</div>}}

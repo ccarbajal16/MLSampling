@@ -142,12 +142,20 @@ articles:
   - title: "Getting Started"
     navbar: "Getting Started"
     contents:
+      - ml-sampling-overview
       - ml-sampling-quickstart
 
-  - title: "Advanced Usage"
-    navbar: "Advanced Usage"
+  - title: "Examples & Advanced Usage"
+    navbar: "Examples & Advanced"
     contents:
+      - ml-sampling-examples
       - advanced-ml-optimization
+
+  - title: "Performance & Troubleshooting"
+    navbar: "Performance & Help"
+    contents:
+      - performance-optimization
+      - troubleshooting
 
 footer:
   structure:

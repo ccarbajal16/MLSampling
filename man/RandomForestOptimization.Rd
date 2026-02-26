@@ -40,7 +40,6 @@ new_locations <- rf_opt$optimize_locations(
 rf_opt <- RandomForestOptimization$new()
 rf_custom <- RandomForestOptimization$new(config = list(ntree = 1000))
 }
-Fit Random Forest model to spatial data
 
 }
 \section{Public fields}{
@@ -96,7 +95,6 @@ Fit Random Forest model to spatial data
 rf_opt <- RandomForestOptimization$new()
 rf_custom <- RandomForestOptimization$new(config = list(ntree = 1000))
 }
-Fit Random Forest model to spatial data
 
 }
 \if{html}{\out{</div>}}

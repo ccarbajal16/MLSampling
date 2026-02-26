@@ -26,7 +26,6 @@ config <- ConfigManager$new(list(
   memory_limit = "2GB"
 ))
 }
-Update configuration settings
 
 }
 \section{Public fields}{
@@ -83,7 +82,6 @@ config <- ConfigManager$new(list(
   memory_limit = "2GB"
 ))
 }
-Update configuration settings
 
 }
 \if{html}{\out{</div>}}
