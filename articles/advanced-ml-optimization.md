@@ -1,0 +1,103 @@
+# Advanced ML Optimization
+
+## Introduction
+
+The `MLSampling` package introduces advanced machine learning
+capabilities for spatial sampling design. This vignette explores two
+powerful new methods: Bayesian Deep Learning (BDL) for uncertainty-aware
+sampling and Random Forest (RF) optimization for feature-driven design.
+It also covers how to combine these approaches using Ensemble methods.
+
+## Bayesian Deep Learning (BDL)
+
+BDL allows us to quantify the uncertainty in our spatial predictions. By
+sampling in areas of high uncertainty, we can maximize the information
+gain of new samples.
+
+### Epistemic vs Aleatoric Uncertainty
+
+- **Epistemic Uncertainty**: Uncertainty due to lack of knowledge (model
+  uncertainty). Can be reduced with more data.
+- **Aleatoric Uncertainty**: Uncertainty due to inherent noise in the
+  data. Cannot be reduced with more data.
+
+The `MLSampling` tool typically targets **Epistemic** or **Total**
+uncertainty for sampling optimization.
+
+### Running BDL
+
+``` r
+# Run BDL optimization
+bdl_result <- tool$run_bdl(
+  field_data = field_data,
+  existing_samples = existing_samples,
+  n_new_samples = 30,
+  uncertainty_type = "epistemic",  # Target model uncertainty
+  mc_iterations = 100              # Number of Monte Carlo passes
+)
+
+# Visualize uncertainty map
+tool$visualization_service$plot_uncertainty_map(
+  uncertainty_raster = bdl_result$uncertainties$epistemic_uncertainty,
+  field_data = field_data,
+  title = "Epistemic Uncertainty Map"
+)
+```
+
+## Random Forest Optimization (RF)
+
+Random Forest is excellent for understanding non-linear relationships
+between covariates and the target variable. The RF optimization module
+uses feature importance to weigh the sampling design.
+
+### Spatial Random Forest
+
+We incorporate spatial autocorrelation by adding spatial lag features to
+the model.
+
+``` r
+rf_result <- tool$run_rf_optimization(
+  field_data = field_data,
+  existing_samples = existing_samples,
+  n_new_samples = 30,
+  feature_importance_method = "permutation",
+  spatial_autocorr = TRUE  # Enable spatial features
+)
+
+# View feature importance
+print(rf_result$feature_importance)
+```
+
+## Ensemble Optimization
+
+Why choose one model when you can use them all? The Ensemble Manager
+combines predictions and sampling suggestions from multiple models (BDL,
+RF, UDL, UFN) to create a robust design.
+
+### Voting vs Stacking
+
+- **Voting**: Each model “votes” for locations, and the most popular
+  locations are selected.
+- **Stacking**: A meta-model learns to combine the predictions of base
+  models.
+
+``` r
+ensemble_result <- tool$run_ensemble(
+  field_data = field_data,
+  existing_samples = existing_samples,
+  n_new_samples = 50,
+  methods = c("BDL", "RF", "UDL"),
+  ensemble_method = "voting"
+)
+
+# Generate ensemble report
+tool$generate_ml_report(ensemble_result)
+```
+
+## Conclusion
+
+By leveraging these advanced ML techniques, `MLSampling` moves beyond
+simple geometric or statistical sampling designs, allowing for: 1.
+**Risk-aware sampling** (via Uncertainty Quantification) 2.
+**Process-aware sampling** (via Feature Importance) 3. **Robust
+sampling** (via Ensemble methods)
