@@ -136,7 +136,7 @@ reference:
       Low-level helper functions used internally by the package. Documented here
       for developer reference.
     contents:
-      - everything()
+      - matches(".")
 
 articles:
   - title: "Getting Started"
