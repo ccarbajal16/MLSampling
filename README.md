@@ -17,7 +17,7 @@ This framework implements a constitutional framework ensuring excellence across 
 
 - ✅ **Spatial Analysis Excellence**: Modern terra/sf packages with comprehensive CRS validation
 - ✅ **Code Quality Excellence**: R6 classes, comprehensive error handling, and validation systems
-- ✅ **Testing Standards**: 90%+ test coverage with test-driven development approach
+- ✅ **Testing Standards**: Unit, integration, spatial and performance suites following a test-driven development approach
 - ✅ **User Experience Consistency**: Consistent APIs, progress feedback, and interactive modes
 - ✅ **Performance Excellence**: Memory efficiency, parallel processing, and constitutional performance validation
 
@@ -562,7 +562,7 @@ spatial_rep <- assess_spatial_representativeness(
 
 - **Spatial Analysis Excellence**: Modern terra/sf packages with CRS validation
 - **Code Quality Excellence**: R6 classes with comprehensive error handling
-- **Testing Standards**: 90%+ test coverage with TDD approach
+- **Testing Standards**: Unit, integration, spatial and performance suites following a TDD approach
 - **User Experience Consistency**: Consistent APIs across all functions
 - **Performance Excellence**: Memory efficiency and parallel processing
 
@@ -609,7 +609,7 @@ MLSampling/
 │   ├── advanced-ml-optimization.Rmd        # Advanced techniques
 │   ├── performance-optimization.Rmd        # Performance tuning
 │   └── troubleshooting.Rmd                 # Problem solving guide
-├── tests/                   # 28 test files (90%+ coverage target)
+├── tests/                   # 27 test files across unit, spatial and performance suites
 │   ├── testthat.R                          # Test runner
 │   ├── testthat/                           # Unit & integration tests (22 files)
 │   │   ├── helper-synthetic-data.R
@@ -699,7 +699,7 @@ Constitutional graph-based implementation with:
 
 ### Automated Testing Framework
 
-- **Unit Tests**: 90%+ code coverage with constitutional compliance validation
+- **Unit Tests**: Property-based and unit tests across the ML modules with constitutional compliance validation
 - **Integration Tests**: End-to-end workflow testing with real data
 - **Performance Tests**: Constitutional performance requirements validation
 - **Spatial Tests**: CRS consistency and spatial analysis excellence verification

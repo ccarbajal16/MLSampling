@@ -13,7 +13,7 @@
 #' The MLSampling class integrates all constitutional principles:
 #' - Code Quality Excellence: Comprehensive error handling and validation
 #' - Spatial Analysis Excellence: Modern terra/sf usage with CRS validation
-#' - Testing Standards: 90%+ test coverage with TDD approach
+#' - Testing Standards: Unit, spatial, integration and performance tests with a TDD approach
 #' - User Experience Consistency: Consistent APIs and progress feedback
 #' - Performance Excellence: Memory efficiency and parallel support
 #'

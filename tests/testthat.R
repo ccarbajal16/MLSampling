@@ -20,7 +20,7 @@ options(
 
 # Constitutional compliance message
 message("Running tests with MLSampling Constitutional Standards:")
-message("- Code Quality Excellence: Comprehensive test coverage (90%+ target)")
+message("- Code Quality Excellence: Comprehensive error handling and validation")
 message("- Spatial Analysis Excellence: CRS validation and precision tests")
 message("- Testing Standards: Unit, spatial, integration, and performance tests")
 message("- User Experience: Consistent API and error handling validation")

@@ -105,7 +105,7 @@ create_soil_sampling_tool <- function(config = NULL,
       cat("  ✓ Code Quality Excellence (validation & error handling)\n")
       cat("  ✓ Performance Excellence (memory & speed optimization)\n")
       cat("  ✓ User Experience Consistency (progress feedback)\n")
-      cat("  ✓ Comprehensive Testing Standards (90%+ coverage)\n")
+      cat("  ✓ Comprehensive Testing Standards (unit, spatial, integration)\n")
       cat("\nFor help, use: tool$help() or ?SoilSamplingTool\n")
     }
     
@@ -616,7 +616,7 @@ if (!interactive()) {
       cat("✓ Code Quality Excellence (validation & error handling)\n")
       cat("✓ Performance Excellence (memory & speed optimization)\n")
       cat("✓ User Experience Consistency (progress feedback)\n")
-      cat("✓ Comprehensive Testing Standards (90%+ coverage)\n")
+      cat("✓ Comprehensive Testing Standards (unit, spatial, integration)\n")
       cat("\nThis tool implements UDL and UFN models for soil sampling optimization\n")
       cat("with constitutional compliance for spatial analysis excellence.\n")
       cat("\nCommand Details:\n")
