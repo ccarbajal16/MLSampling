@@ -1,7 +1,7 @@
 Package: MLSampling
 Type: Package
 Title: Machine Learning-Based Spatial Sampling Optimization Framework
-Version: 0.0.2.9000
+Version: 0.0.3
 Date: 2026-08-03
 Author: Carlos Carbajal
 Maintainer: Carlos <ccarbajal@educagis.com>
