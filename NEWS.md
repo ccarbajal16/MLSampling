@@ -1,3 +1,24 @@
+# MLSampling 0.0.2.9000 (development version)
+
+## Bug fixes
+
+* Random Forest classification works again. `calculate_spatial_features()`
+  computed the spatial lag as `weights %*% values`, which fails for a factor
+  target, and `spatial_autocorr` defaults to `TRUE`, so classification failed
+  under the default configuration. A factor target now produces the
+  neighbourhood class composition instead: one `spatial_lag_<level>` column per
+  level holding the inverse distance weighted proportion of neighbours in that
+  class. Numeric targets keep the single `spatial_lag` column and are
+  unchanged.
+
+## Testing
+
+* The Random Forest property tests no longer wrap their assertions in
+  `tryCatch()`, which was turning expectation failures into informational
+  messages and reporting a passing suite. This had been masking both the
+  classification failure above and the covariate assertion on the feature
+  importance table.
+
 # MLSampling 0.0.2
 
 ## Impact on existing results
