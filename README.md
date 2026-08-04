@@ -213,10 +213,14 @@ field_data <- list(
 )
 
 # Create existing sampling locations (random points within boundary)
+# The data frame must carry at least one numeric column with the measured
+# property. That column is the model target: when `target_variable` is not
+# passed explicitly, the first numeric column other than x/y is used.
 set.seed(123)
 existing_samples <- data.frame(
   x = runif(25, extent["xmin"], extent["xmax"]),
   y = runif(25, extent["ymin"], extent["ymax"]),
+  soil_property = rnorm(25, mean = 10, sd = 2),  # measured value to model
   id = paste0("S", 1:25)
 )
 
@@ -501,9 +505,11 @@ tool$generate_ml_report(results, output_dir = "ml_comparison_results")
 field_data <- stack("path/to/your/raster/files")
 
 # Define existing sample locations
+# `soil_property` holds the measured value the models are trained on
 existing_samples <- data.frame(
   x = c(100, 200, 300),
   y = c(150, 250, 350),
+  soil_property = c(12.4, 9.8, 11.1),
   id = c("S1", "S2", "S3")
 )
 
