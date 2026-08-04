@@ -264,10 +264,26 @@ RandomForestOptimization <- R6::R6Class("RandomForestOptimization",
       
       # Normalize weights
       weights <- weights / rowSums(weights)
-      
+
+      # A distance weighted mean is undefined for a categorical target, so use
+      # the neighbourhood class composition instead: one column per level
+      # holding the weighted proportion of neighbours belonging to it. The
+      # columns of each row sum to 1, mirroring the single spatial_lag column
+      # produced for a numeric target.
+      if (is.factor(values)) {
+        indicators <- vapply(
+          levels(values),
+          function(level) as.numeric(values == level),
+          numeric(length(values))
+        )
+        class_lag <- weights %*% indicators
+        colnames(class_lag) <- paste0("spatial_lag_", levels(values))
+        return(as.data.frame(class_lag))
+      }
+
       # Calculate spatial lag
       spatial_lag <- as.vector(weights %*% values)
-      
+
       return(data.frame(spatial_lag = spatial_lag))
     },
     
