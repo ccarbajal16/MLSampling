@@ -170,8 +170,14 @@ DesignComparison <- R6::R6Class("DesignComparison",
       # 2. Representativeness: Feature Space Coverage
       # If covariates are available, check how well samples cover feature space distribution
       if (!is.null(field_data$covariates)) {
-        # Sample covariates at design locations
-        sample_vals <- terra::extract(field_data$covariates, coords)[, -1, drop = FALSE]
+        # Sample covariates at design locations.
+        # terra::extract() returns an ID column only for SpatVector input, not
+        # for a coordinate matrix. Drop it only when it is actually present,
+        # otherwise the first covariate is discarded instead.
+        sample_vals <- terra::extract(field_data$covariates, coords)
+        if ("ID" %in% names(sample_vals)) {
+          sample_vals <- sample_vals[, names(sample_vals) != "ID", drop = FALSE]
+        }
         
         # Sample covariates from the whole field (reference distribution)
         field_vals <- terra::spatSample(field_data$covariates, size = 1000, method = "random", na.rm = TRUE)

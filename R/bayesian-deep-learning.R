@@ -505,7 +505,14 @@ BayesianDeepLearning <- R6::R6Class("BayesianDeepLearning",
           coords, 
           method = "bilinear"
         )
-        covariate_values <- covariate_values[, -1, drop = FALSE]  # Remove ID column, keep as DF
+        # terra::extract() returns an ID column only for SpatVector input, not
+        # for a coordinate matrix. Drop it only when it is actually present,
+        # otherwise the first covariate is discarded instead.
+        if ("ID" %in% names(covariate_values)) {
+          covariate_values <- covariate_values[
+            , names(covariate_values) != "ID", drop = FALSE
+          ]
+        }
       } else {
         # Use coordinates as features if no covariates
         covariate_values <- coords
@@ -585,7 +592,14 @@ BayesianDeepLearning <- R6::R6Class("BayesianDeepLearning",
           coords, 
           method = "bilinear"
         )
-        covariate_values <- covariate_values[, -1, drop = FALSE] # Remove ID column
+        # terra::extract() returns an ID column only for SpatVector input, not
+        # for a coordinate matrix. Drop it only when it is actually present,
+        # otherwise the first covariate is discarded instead.
+        if ("ID" %in% names(covariate_values)) {
+          covariate_values <- covariate_values[
+            , names(covariate_values) != "ID", drop = FALSE
+          ]
+        }
       } else {
         covariate_values <- coords
       }
