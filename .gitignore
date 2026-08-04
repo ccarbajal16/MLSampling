@@ -5,3 +5,6 @@
 .Rcheck/
 .DS_Store
 /Meta/
+
+# Tooling artifacts (not part of the package)
+.atl/
