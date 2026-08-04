@@ -787,9 +787,9 @@ BenchmarkingService <- R6::R6Class("BenchmarkingService",
       } else if (scaling_factor < 1.8) {
         return("O(n) - Linear")
       } else if (scaling_factor < 2.5) {
-        return("O(n²) - Quadratic")
+        return("O(n\u00b2) - Quadratic")
       } else {
-        return("O(n³+) - Polynomial/Exponential")
+        return("O(n\u00b3+) - Polynomial/Exponential")
       }
     },
     

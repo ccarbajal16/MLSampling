@@ -1,10 +1,12 @@
 Package: MLSampling
-Type: Package
 Title: Machine Learning-Based Spatial Sampling Optimization Framework
 Version: 0.0.3
 Date: 2026-08-03
-Author: Carlos Carbajal
-Maintainer: Carlos <ccarbajal@educagis.com>
+Authors@R:
+    person(given = "Carlos",
+           family = "Carbajal",
+           role = c("aut", "cre"),
+           email = "ccarbajal@educagis.com")
 Description: Comprehensive machine learning-based spatial sampling optimization framework integrating 
     Bayesian Deep Learning (BDL), Random Forest optimization, Unified Deep Learning (UDL), and 
     Unified Feature Network (UFN) models. Provides advanced ML techniques for uncertainty quantification, 
@@ -13,7 +15,6 @@ Description: Comprehensive machine learning-based spatial sampling optimization 
     with modern terra/sf packages.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: false
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Depends:
@@ -21,10 +22,29 @@ Depends:
 Imports:
     terra (>= 1.7.0),
     sf (>= 1.0.0),
+    units,
     torch (>= 0.11.0),
     R6 (>= 2.5.0),
     dplyr,
     ggplot2,
+    viridis,
+    caret,
+    randomForest,
+    rmarkdown,
+    microbenchmark,
+    progress,
+    stats,
+    utils
+Suggests:
+    testthat (>= 3.1.0),
+    roxygen2 (>= 7.2.0),
+    covr (>= 3.6.0),
+    lintr (>= 3.0.0),
+    pkgdown (>= 2.0.0),
+    future (>= 1.28.0),
+    stars (>= 0.6.0),
+    pryr,
+    knitr,
     plotly,
     leaflet,
     DT,
@@ -33,30 +53,11 @@ Imports:
     igraph,
     GA,
     GenSA,
-    caret,
-    randomForest,
     e1071,
     corrplot,
-    viridis,
     RColorBrewer,
     gridExtra,
-    knitr,
-    rmarkdown,
-    MASS,
-    microbenchmark,
-    progress
-Suggests:
-    testthat (>= 3.1.0),
-    quickcheck (>= 0.1.0),
-    roxygen2 (>= 7.2.0),
-    covr (>= 3.6.0),
-    lintr (>= 3.0.0),
-    pkgdown (>= 2.0.0),
-    future (>= 1.28.0),
-    stars (>= 0.6.0),
-    pryr
-Remotes:
-    hadley/pryr
+    MASS
 VignetteBuilder: knitr
 Config/Needs/website: pkgdown
 URL: https://ccarbajal16.github.io/MLSampling/, https://github.com/ccarbajal16/MLSampling

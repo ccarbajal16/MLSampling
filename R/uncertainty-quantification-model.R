@@ -709,6 +709,7 @@ validate_mc_samples_consistency <- function(mc_samples, n_samples) {
 #' @param x First value
 #' @param y Second value (if x is NULL)
 #' @return Non-NULL value
+#' @noRd
 `%||%` <- function(x, y) {
   if (is.null(x)) y else x
 }

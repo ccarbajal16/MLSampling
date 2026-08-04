@@ -9,3 +9,6 @@
 ^pkgdown$
 ^LICENSE\.md$
 ^\.atl$
+^\.claude$
+^\.vscode$
+^examples$

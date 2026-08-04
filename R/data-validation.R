@@ -171,7 +171,7 @@ validate_boundary_geometry <- function(boundary) {
       # Check for reasonable area (not zero or extremely small)
       if (any(result$area <= units::set_units(1, "m^2"))) {
         result$is_valid <- FALSE
-        result$issues <- c(result$issues, "Boundary area is too small (≤1 m²)")
+        result$issues <- c(result$issues, "Boundary area is too small (\u22641 m\u00b2)")
       }
     }, error = function(e) {
       result$is_valid <- FALSE
@@ -281,7 +281,7 @@ validate_crs_consistency <- function(boundary, covariates) {
     result$boundary_crs <- sf::st_crs(boundary)$input
     result$covariates_crs <- terra::crs(covariates)
 
-    # Compare CRS objects directly — avoids string representation mismatches
+    # Compare CRS objects directly - avoids string representation mismatches
     # (e.g. "WGS 84" vs full WKT for the same EPSG:4326 datum)
     boundary_crs_obj   <- sf::st_crs(boundary)
     covariates_crs_obj <- sf::st_crs(result$covariates_crs)

@@ -490,6 +490,7 @@ validate_constitutional_compliance <- function(selected_locations, metrics, para
 #' @param x First value
 #' @param y Second value (if x is NULL)
 #' @return Non-NULL value
+#' @noRd
 `%||%` <- function(x, y) {
   if (is.null(x)) y else x
 }
