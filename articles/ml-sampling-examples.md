@@ -15,7 +15,8 @@ principles:
   validation
 - ✅ **Code Quality Excellence**: Comprehensive error handling and
   validation  
-- ✅ **Testing Standards**: 90%+ test coverage with TDD approach
+- ✅ **Testing Standards**: Unit, spatial, integration and performance
+  tests with a TDD approach
 - ✅ **User Experience Consistency**: Consistent APIs and progress
   feedback
 - ✅ **Performance Excellence**: Memory efficiency and parallel support
@@ -27,6 +28,7 @@ principles:
 Always start by validating your system environment:
 
 ``` r
+
 library(MLSampling)
 
 # Validate system environment for constitutional compliance
@@ -42,6 +44,7 @@ if (validation_result) {
 #### 2. Creating a Tool Instance
 
 ``` r
+
 # Create tool with default constitutional settings
 tool <- create_soil_sampling_tool()
 
@@ -63,6 +66,7 @@ tool_custom <- create_soil_sampling_tool(
 #### 3. Generate Test Data
 
 ``` r
+
 # Generate synthetic field data for testing
 field_data <- generate_synthetic_field(
   field_size = c(1000, 800),  # 1000m x 800m field
@@ -85,6 +89,7 @@ str(existing_samples)
 #### 4. Basic UDL Optimization
 
 ``` r
+
 # Run UDL optimization with constitutional compliance
 udl_result <- tool$run_udl(
   field_data = field_data,
@@ -103,6 +108,7 @@ print(udl_result$metrics)
 #### 5. UFN Optimization with Torch
 
 ``` r
+
 # Check if torch is available
 if (torch::torch_is_installed()) {
   
@@ -137,6 +143,7 @@ if (torch::torch_is_installed()) {
 #### 6. Comprehensive Model Comparison
 
 ``` r
+
 # Compare UDL and UFN models with statistical testing
 comparison_result <- tool$compare_models(
   field_data = field_data,
@@ -157,6 +164,7 @@ print(comparison_result$recommendations)
 #### 7. Generate Comprehensive Reports
 
 ``` r
+
 # Generate report for single optimization
 udl_report <- tool$generate_report(
   result = udl_result,
@@ -181,6 +189,7 @@ cat("Comparison Report saved to:", comparison_report$file_path, "\n")
 #### 8. Loading Real Field Data
 
 ``` r
+
 # Load real field data with constitutional validation
 real_field_data <- load_real_field_data(
   data_path = "data/",
@@ -208,6 +217,7 @@ if (validation_result$is_valid) {
 #### 9. Real Data Optimization
 
 ``` r
+
 # Run optimization on real data
 real_udl_result <- tool$run_udl(
   field_data = real_field_data,
@@ -232,6 +242,7 @@ cat("Optimized sampling locations saved to:", csv_file, "\n")
 #### 10. Custom Optimization Parameters
 
 ``` r
+
 # Advanced UDL configuration
 advanced_udl <- tool$run_udl(
   field_data = field_data,
@@ -255,6 +266,7 @@ advanced_udl <- tool$run_udl(
 #### 11. Performance Benchmarking
 
 ``` r
+
 # Get performance benchmarks with constitutional compliance
 benchmark_results <- tool$get_benchmark_results()
 
@@ -280,6 +292,7 @@ print(performance_validation)
 #### 12. Error Handling Examples
 
 ``` r
+
 # Example of graceful error handling
 tryCatch({
   
@@ -309,6 +322,7 @@ tryCatch({
 #### 13. Creating Visualizations
 
 ``` r
+
 # Generate spatial visualizations
 visualization_data <- create_sampling_visualizations(
   field_data = field_data,
@@ -336,6 +350,7 @@ static_plots <- create_static_sampling_plots(
 #### 14. Exporting Results
 
 ``` r
+
 # Export comprehensive results package
 export_package <- export_sampling_results(
   results = list(
@@ -359,6 +374,7 @@ print(export_package$file_list)
 #### 15. Common Problems and Solutions
 
 ``` r
+
 # Check for common configuration issues
 diagnostic_results <- run_diagnostic_checks(tool)
 

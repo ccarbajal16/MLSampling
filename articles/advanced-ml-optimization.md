@@ -27,6 +27,7 @@ uncertainty for sampling optimization.
 ### Running BDL
 
 ``` r
+
 # Run BDL optimization
 bdl_result <- tool$run_bdl(
   field_data = field_data,
@@ -56,6 +57,7 @@ We incorporate spatial autocorrelation by adding spatial lag features to
 the model.
 
 ``` r
+
 rf_result <- tool$run_rf_optimization(
   field_data = field_data,
   existing_samples = existing_samples,
@@ -82,6 +84,7 @@ RF, UDL, UFN) to create a robust design.
   models.
 
 ``` r
+
 ensemble_result <- tool$run_ensemble(
   field_data = field_data,
   existing_samples = existing_samples,

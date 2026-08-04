@@ -14,8 +14,8 @@ across all operational dimensions:
   comprehensive CRS validation
 - ✅ **Code Quality Excellence**: R6 classes, comprehensive error
   handling, and validation systems
-- ✅ **Testing Standards**: 90%+ test coverage with test-driven
-  development approach
+- ✅ **Testing Standards**: Unit, integration, spatial and performance
+  suites following a test-driven development approach
 - ✅ **User Experience Consistency**: Consistent APIs, progress
   feedback, and interactive modes
 - ✅ **Performance Excellence**: Memory efficiency, parallel processing,
@@ -83,6 +83,7 @@ across all operational dimensions:
 #### Option 1: Install from GitHub (Recommended)
 
 ``` r
+
 # 1. Install devtools if not already installed
 if (!require(devtools)) {
   install.packages("devtools")
@@ -98,6 +99,7 @@ library(MLSampling)
 #### Option 2: Install using PAK (Fast and Modern)
 
 ``` r
+
 # 1. Install pak if not already installed
 if (!require(pak)) {
   install.packages("pak")
@@ -114,6 +116,7 @@ library(MLSampling)
 #### Option 3: Constitutional Installation Process (Manual Dependencies)
 
 ``` r
+
 # 1. Validate R version for constitutional compliance
 if (getRversion() < "4.3.0") {
   stop("Constitutional compliance requires R >= 4.3.0")
@@ -141,6 +144,7 @@ library(MLSampling)
 ### Post-Installation Setup
 
 ``` r
+
 # Verify installation and validate system requirements
 validation_result <- validate_system_requirements()
 if (!validation_result$meets_requirements) {
@@ -158,6 +162,7 @@ if (!torch::torch_is_installed()) {
 ### 1. System Validation and Tool Creation
 
 ``` r
+
 # Load enhanced ML sampling framework
 library(MLSampling)
 
@@ -183,6 +188,7 @@ tool <- create_ml_sampling_tool(
 ### 2. Creating Synthetic Test Data
 
 ``` r
+
 # Create synthetic field data for testing
 # Field data structure requires: boundary, covariates, and CRS
 
@@ -221,10 +227,14 @@ field_data <- list(
 )
 
 # Create existing sampling locations (random points within boundary)
+# The data frame must carry at least one numeric column with the measured
+# property. That column is the model target: when `target_variable` is not
+# passed explicitly, the first numeric column other than x/y is used.
 set.seed(123)
 existing_samples <- data.frame(
   x = runif(25, extent["xmin"], extent["xmax"]),
   y = runif(25, extent["ymin"], extent["ymax"]),
+  soil_property = rnorm(25, mean = 10, sd = 2),  # measured value to model
   id = paste0("S", 1:25)
 )
 
@@ -240,6 +250,7 @@ print(validation_result)
 ### 3. Enhanced BDL Optimization with Uncertainty Quantification
 
 ``` r
+
 # Run BDL optimization with uncertainty quantification
 bdl_result <- tool$run_bdl(
   field_data = field_data,
@@ -260,6 +271,7 @@ print(bdl_result$constitutional_compliance)
 ### 4. Enhanced RF Optimization with Feature Importance
 
 ``` r
+
 # Run RF optimization with feature importance analysis
 rf_result <- tool$run_rf_optimization(
   field_data = field_data,
@@ -279,6 +291,7 @@ print(rf_result$model_performance)
 ### 5. Enhanced UDL Optimization (Legacy Support)
 
 ``` r
+
 # Run UDL optimization with constitutional compliance
 udl_result <- tool$run_udl(
   field_data = field_data,
@@ -298,6 +311,7 @@ print(udl_result$constitutional_compliance)
 ### 6. Enhanced UFN Optimization (Legacy Support with PyTorch)
 
 ``` r
+
 # Check PyTorch availability for constitutional compliance
 if (torch::torch_is_installed()) {
   
@@ -331,6 +345,7 @@ if (torch::torch_is_installed()) {
 ### 7. ML Method Comparison with Enhanced Design Framework
 
 ``` r
+
 # Compare ML methods with constitutional compliance validation
 comparison_result <- tool$compare_designs(
   field_data = field_data,
@@ -352,6 +367,7 @@ print(comparison_result$recommendations)
 ### 8. Ensemble Methods and Advanced ML Integration
 
 ``` r
+
 # Run ensemble optimization combining multiple ML methods
 ensemble_result <- tool$run_ensemble(
   field_data = field_data,
@@ -378,6 +394,7 @@ print(uncertainty_analysis$uncertainty_summary)
 ### 9. Loading and Validating Real Field Data
 
 ``` r
+
 # Load raster covariate data from files
 raster_files <- list.files("data/", pattern = "\\.tif$", full.names = TRUE)
 covariates <- terra::rast(raster_files)
@@ -425,6 +442,7 @@ if (validation_result$is_valid) {
 ### 10. Enhanced Visualization and ML Reporting
 
 ``` r
+
 # Generate comprehensive ML report for a single result
 bdl_report <- tool$generate_ml_report(
   result = bdl_result,
@@ -487,6 +505,7 @@ Rscript inst/scripts/main.R help --constitutional
 ### Model Comparison
 
 ``` r
+
 # Compare ML methods with multiple optimization approaches
 results <- tool$compare_designs(
   field_data = field_data,
@@ -504,14 +523,17 @@ tool$generate_ml_report(results, output_dir = "ml_comparison_results")
 ### Custom Data Integration
 
 ``` r
+
 # Load your own field data
 # field_data should be a raster stack with environmental covariates
 field_data <- stack("path/to/your/raster/files")
 
 # Define existing sample locations
+# `soil_property` holds the measured value the models are trained on
 existing_samples <- data.frame(
   x = c(100, 200, 300),
   y = c(150, 250, 350),
+  soil_property = c(12.4, 9.8, 11.1),
   id = c("S1", "S2", "S3")
 )
 
@@ -564,7 +586,7 @@ spatial_rep <- assess_spatial_representativeness(
 
 - **Spatial Analysis Excellence**: Modern terra/sf packages with CRS validation
 - **Code Quality Excellence**: R6 classes with comprehensive error handling
-- **Testing Standards**: 90%+ test coverage with TDD approach
+- **Testing Standards**: Unit, integration, spatial and performance suites following a TDD approach
 - **User Experience Consistency**: Consistent APIs across all functions
 - **Performance Excellence**: Memory efficiency and parallel processing
 
@@ -611,7 +633,7 @@ MLSampling/
 │   ├── advanced-ml-optimization.Rmd        # Advanced techniques
 │   ├── performance-optimization.Rmd        # Performance tuning
 │   └── troubleshooting.Rmd                 # Problem solving guide
-├── tests/                   # 28 test files (90%+ coverage target)
+├── tests/                   # 27 test files across unit, spatial and performance suites
 │   ├── testthat.R                          # Test runner
 │   ├── testthat/                           # Unit & integration tests (22 files)
 │   │   ├── helper-synthetic-data.R
@@ -720,8 +742,8 @@ Constitutional graph-based implementation with:
 
 ### Automated Testing Framework
 
-- **Unit Tests**: 90%+ code coverage with constitutional compliance
-  validation
+- **Unit Tests**: Property-based and unit tests across the ML modules
+  with constitutional compliance validation
 - **Integration Tests**: End-to-end workflow testing with real data
 - **Performance Tests**: Constitutional performance requirements
   validation

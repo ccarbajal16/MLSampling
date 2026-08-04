@@ -13,6 +13,7 @@ To execute the code, ensure the suggested dependencies listed in
 ## Load the package
 
 ``` r
+
 library(MLSampling)
 library(sf)
 library(terra)
@@ -26,6 +27,7 @@ objects using trivial synthetic data so the example can run without
 external files.
 
 ``` r
+
 # Create a simple square boundary in EPSG:32633 (UTM 33N)
 boundary <- st_as_sf(st_sfc(st_polygon(list(rbind(
   c(0, 0), c(1000, 0), c(1000, 1000), c(0, 1000), c(0, 0)
@@ -54,6 +56,7 @@ existing_samples <- data.frame(
 ## Initialize the tool
 
 ``` r
+
 tool <- create_ml_sampling_tool(
   config = list(
     log_level = "INFO"
@@ -65,6 +68,7 @@ tool <- create_ml_sampling_tool(
 ## Run BDL optimization with Uncertainty Quantification
 
 ``` r
+
 bdl_result <- tool$run_bdl(
   field_data = field_data,
   existing_samples = existing_samples,
@@ -80,6 +84,7 @@ print(bdl_result$uncertainties$uncertainty_summary)
 ## Run Random Forest Optimization with Feature Importance
 
 ``` r
+
 rf_result <- tool$run_rf_optimization(
   field_data = field_data,
   existing_samples = existing_samples,
@@ -94,6 +99,7 @@ print(rf_result$feature_importance)
 ## Compare algorithms
 
 ``` r
+
 comparison <- tool$compare_models(
   field_data = field_data,
   existing_samples = existing_samples,

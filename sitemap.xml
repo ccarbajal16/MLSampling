@@ -1,5 +1,7 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://ccarbajal16.github.io/MLSampling/404.html</loc></url>
+<url><loc>https://ccarbajal16.github.io/MLSampling/LICENSE-text.html</loc></url>
+<url><loc>https://ccarbajal16.github.io/MLSampling/LICENSE.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/articles/advanced-ml-optimization.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/articles/index.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/articles/ml-sampling-examples.html</loc></url>
@@ -9,6 +11,7 @@
 <url><loc>https://ccarbajal16.github.io/MLSampling/articles/troubleshooting.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/authors.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/index.html</loc></url>
+<url><loc>https://ccarbajal16.github.io/MLSampling/news/index.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/reference/BDLError.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/reference/BayesianDeepLearning.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/reference/BenchmarkingService.html</loc></url>
@@ -50,12 +53,9 @@
 <url><loc>https://ccarbajal16.github.io/MLSampling/reference/create_spatial_uncertainty.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/reference/create_uncertainty_results.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/reference/determine_primary_crs.html</loc></url>
-<url><loc>https://ccarbajal16.github.io/MLSampling/reference/execute_udl_optimization.html</loc></url>
-<url><loc>https://ccarbajal16.github.io/MLSampling/reference/execute_ufn_optimization.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/reference/extract_metric_value.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/reference/extract_ml_component.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/reference/generate_sample_ids.html</loc></url>
-<url><loc>https://ccarbajal16.github.io/MLSampling/reference/grapes-or-or-grapes.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/reference/index.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/reference/raise_error.html</loc></url>
 <url><loc>https://ccarbajal16.github.io/MLSampling/reference/standardize_confidence_intervals.html</loc></url>

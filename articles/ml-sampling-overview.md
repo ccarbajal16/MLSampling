@@ -36,6 +36,7 @@ Key collaborators include:
 To begin, load the package and create an instance of the tool.
 
 ``` r
+
 library(MLSampling)
 
 # Initialize with default configuration
@@ -57,6 +58,7 @@ Four primary optimization methods are available:
     statistical fallbacks (Legacy support).
 
 ``` r
+
 # Run BDL optimization
 bdl_result <- tool$run_bdl(
   field_data = field_data,
@@ -79,6 +81,7 @@ experiments and evaluating results under configurable confidence
 thresholds.
 
 ``` r
+
 comparison <- tool$compare_models(
   field_data = field_data,
   existing_samples = existing_samples,

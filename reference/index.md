@@ -230,8 +230,6 @@ here for developer reference.
   : Extract ML component from ml_components list
 - [`generate_sample_ids()`](https://ccarbajal16.github.io/MLSampling/reference/generate_sample_ids.md)
   : Generate automatic sample IDs
-- [`` `%||%` ``](https://ccarbajal16.github.io/MLSampling/reference/grapes-or-or-grapes.md)
-  : Helper function for NULL coalescing
 - [`raise_error()`](https://ccarbajal16.github.io/MLSampling/reference/raise_error.md)
   : Raise a specific error
 - [`standardize_confidence_intervals()`](https://ccarbajal16.github.io/MLSampling/reference/standardize_confidence_intervals.md)
