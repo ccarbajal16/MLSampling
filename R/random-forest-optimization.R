@@ -199,7 +199,7 @@ RandomForestOptimization <- R6::R6Class("RandomForestOptimization",
         sample_data <- sf::st_drop_geometry(existing_samples)
       } else {
         coords <- as.matrix(existing_samples[, c("x", "y")])
-        sample_data <- existing_samples
+        sample_data <- existing_samples[, !names(existing_samples) %in% c("x", "y"), drop = FALSE]
       }
       
       # Extract covariates
@@ -271,9 +271,9 @@ RandomForestOptimization <- R6::R6Class("RandomForestOptimization",
       best_config <- private$config
       
       if (data$task_type == "classification") {
-        best_config$mtry <- floor(sqrt(ncol(data$features)))
+        best_config$mtry <- max(1, floor(sqrt(ncol(data$features))))
       } else {
-        best_config$mtry <- floor(ncol(data$features) / 3)
+        best_config$mtry <- max(1, floor(ncol(data$features) / 3))
       }
       
       return(best_config)
