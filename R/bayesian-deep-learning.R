@@ -495,7 +495,12 @@ BayesianDeepLearning <- R6::R6Class("BayesianDeepLearning",
       } else {
         coords <- as.matrix(existing_samples[, c("x", "y")])
         colnames(coords) <- c("x", "y")
-        sample_data <- existing_samples
+        # Drop the coordinate columns so they cannot be picked up as the
+        # target by the automatic detection below. The sf branch above gets
+        # this for free from st_drop_geometry().
+        sample_data <- existing_samples[
+          , !names(existing_samples) %in% c("x", "y"), drop = FALSE
+        ]
       }
       
       # Extract covariate values at sample locations
