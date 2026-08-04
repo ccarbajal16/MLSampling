@@ -81,36 +81,31 @@ test_that("Property 5: RF Feature Importance Optimization - RF must calculate fe
       field_data <- create_field_data_generator()()
       existing_samples <- create_sample_locations_generator(field_data)()
       
-      tryCatch({
-        # Initialize RF module
-        rf_opt <- RandomForestOptimization$new()
-        
-        # Fit model
-        model_result <- rf_opt$fit_model(field_data, existing_samples, target_variable = "soil_property")
-        
-        # Property: Feature importance must be calculated and returned
-        importance <- rf_opt$get_feature_importance()
-        
-        expect_true(is.data.frame(importance),
-                   info = paste("Test case", i, ": Importance is not a data frame"))
-        expect_true(nrow(importance) > 0,
-                   info = paste("Test case", i, ": Importance table is empty"))
-        expect_true(all(c("feature", "importance") %in% names(importance)),
-                   info = paste("Test case", i, ": Importance table missing columns"))
-        
-        # Property: Importance scores should be numeric
-        expect_true(is.numeric(importance$importance),
-                   info = paste("Test case", i, ": Importance scores are not numeric"))
-        
-        # Property: Feature names should match covariates
-        covariate_names <- names(field_data$covariates)
-        # Note: Depending on spatial autocorr, there might be extra features
-        expect_true(any(importance$feature %in% covariate_names),
-                   info = paste("Test case", i, ": No original covariates in importance list"))
-        
-      }, error = function(e) {
-        message("Test case ", i, " skipped due to error: ", e$message)
-      })
+      # Initialize RF module
+      rf_opt <- RandomForestOptimization$new()
+
+      # Fit model
+      model_result <- rf_opt$fit_model(field_data, existing_samples, target_variable = "soil_property")
+
+      # Property: Feature importance must be calculated and returned
+      importance <- rf_opt$get_feature_importance()
+
+      expect_true(is.data.frame(importance),
+                 info = paste("Test case", i, ": Importance is not a data frame"))
+      expect_true(nrow(importance) > 0,
+                 info = paste("Test case", i, ": Importance table is empty"))
+      expect_true(all(c("feature", "importance") %in% names(importance)),
+                 info = paste("Test case", i, ": Importance table missing columns"))
+
+      # Property: Importance scores should be numeric
+      expect_true(is.numeric(importance$importance),
+                 info = paste("Test case", i, ": Importance scores are not numeric"))
+
+      # Property: Feature names should match covariates
+      covariate_names <- names(field_data$covariates)
+      # Note: Depending on spatial autocorr, there might be extra features
+      expect_true(any(importance$feature %in% covariate_names),
+                 info = paste("Test case", i, ": No original covariates in importance list"))
     }
   }
 })
@@ -130,25 +125,17 @@ test_that("Property 6: RF Task Type Support - RF must support both regression an
     rf_opt <- RandomForestOptimization$new()
     
     # Test Regression
-    tryCatch({
-      reg_result <- rf_opt$fit_model(field_data, existing_samples, target_variable = "soil_property")
-      expect_true(reg_result$model$type == "regression",
-                 info = paste("Test case", i, ": Model type should be regression"))
-    }, error = function(e) {
-      message("Regression test case ", i, " failed: ", e$message)
-    })
-    
+    reg_result <- rf_opt$fit_model(field_data, existing_samples, target_variable = "soil_property")
+    expect_true(reg_result$model$type == "regression",
+               info = paste("Test case", i, ": Model type should be regression"))
+
     # Test Classification
     # Convert factor column explicitly for randomForest
     existing_samples$class_property <- as.factor(existing_samples$class_property)
-    
-    tryCatch({
-      class_result <- rf_opt$fit_model(field_data, existing_samples, target_variable = "class_property")
-      expect_true(class_result$model$type == "classification",
-                 info = paste("Test case", i, ": Model type should be classification"))
-    }, error = function(e) {
-      message("Classification test case ", i, " failed: ", e$message)
-    })
+
+    class_result <- rf_opt$fit_model(field_data, existing_samples, target_variable = "class_property")
+    expect_true(class_result$model$type == "classification",
+               info = paste("Test case", i, ": Model type should be classification"))
   }
 })
 
