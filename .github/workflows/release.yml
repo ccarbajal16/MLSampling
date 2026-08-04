@@ -1,0 +1,54 @@
+# Publishes a GitHub release whenever a v* tag is pushed.
+# Release notes are taken from the matching section of NEWS.md, so NEWS.md
+# stays the single source of truth and the release never drifts from it.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+name: release
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Derive version from the tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Check the version matches DESCRIPTION
+        run: |
+          desc=$(grep '^Version:' DESCRIPTION | sed 's/^Version:[[:space:]]*//')
+          if [ "$desc" != "${{ steps.version.outputs.version }}" ]; then
+            echo "Tag ${GITHUB_REF_NAME} does not match DESCRIPTION version ${desc}." >&2
+            exit 1
+          fi
+
+      - name: Extract the NEWS.md section for this version
+        run: |
+          awk -v ver="${{ steps.version.outputs.version }}" '
+            $0 ~ "^# MLSampling " ver "([^0-9.]|$)" { found = 1; next }
+            found && /^# MLSampling / { exit }
+            found { print }
+          ' NEWS.md > RELEASE_NOTES.md
+          if [ ! -s RELEASE_NOTES.md ]; then
+            echo "No NEWS.md section found for ${{ steps.version.outputs.version }}." >&2
+            exit 1
+          fi
+          cat RELEASE_NOTES.md
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            --title "MLSampling ${{ steps.version.outputs.version }}" \
+            --notes-file RELEASE_NOTES.md \
+            --verify-tag
