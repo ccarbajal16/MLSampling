@@ -5,7 +5,7 @@
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![R >= 4.3.0](https://img.shields.io/badge/R-%3E%3D%204.3.0-276DC3?logo=r&logoColor=white)](https://www.r-project.org/)
-[![Version](https://img.shields.io/badge/version-0.0.1-blue.svg)](https://github.com/ccarbajal16/MLSampling/blob/master/DESCRIPTION)
+[![Version](https://img.shields.io/badge/version-0.0.2-blue.svg)](https://github.com/ccarbajal16/MLSampling/blob/master/DESCRIPTION)
 [![Documentation](https://img.shields.io/badge/docs-pkgdown-2596be.svg)](https://ccarbajal16.github.io/MLSampling/)
 <!-- badges: end -->
 
