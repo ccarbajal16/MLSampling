@@ -43,7 +43,6 @@ Suggests:
     pkgdown (>= 2.0.0),
     future (>= 1.28.0),
     stars (>= 0.6.0),
-    pryr,
     knitr,
     plotly,
     leaflet,
