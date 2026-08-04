@@ -1,3 +1,39 @@
+# MLSampling 0.0.3.9000 (development version)
+
+Work towards a CRAN submission. `R CMD check --as-cran` went from
+1 ERROR / 5 WARNINGs / 4 NOTEs to 1 ERROR / 1 WARNING / 2 NOTEs.
+
+## Packaging
+
+* `DESCRIPTION` now uses `Authors@R`. The maintainer had been recorded as
+  "Carlos", a first name only, which CRAN rejects.
+
+* Removed the `Remotes` field. `pryr` is on CRAN, so the field was never
+  needed and it was pushing `pryr` out of the mainstream repositories.
+
+* Moved 14 never-referenced packages from `Imports` to `Suggests`, leaving 12.
+  `ggplot2` and `viridis` stay in `Imports` because they are used through
+  `import()` in `NAMESPACE`. Declared `units`, which is called in
+  `validate_field_boundary_geometry()` but was missing.
+
+* Dropped `quickcheck`, which is archived on CRAN, and the obsolete `Type` and
+  `LazyData` fields.
+
+## Bug fixes
+
+* Escaped the non-ASCII characters in `benchmarking.R` and `data-validation.R`.
+  Rendered output is unchanged.
+
+* Declared `dist()`, `na.omit()`, `setNames()`, `head()` and
+  `packageVersion()`, previously reported as undefined globals.
+
+## Documentation
+
+* Removed the Rd pages for `execute_udl_optimization` and
+  `execute_ufn_optimization`, which documented private R6 methods as if they
+  were exported functions, and the Rd page for `%||%`, whose `\name` contained
+  a pipe character and which is not exported.
+
 # MLSampling 0.0.3
 
 ## Bug fixes
